@@ -20,7 +20,7 @@ love.draw = editor.draw
 
 love.load = function()
    editor['set-wh'](320, 200)
-   love.graphics.setFont(love.graphics.newFont("FSEX300.ttf", 24))
+   love.graphics.setFont(love.graphics.newFont("FSEX300.ttf", 10))
    love.keyboard.setTextInput(true)
    love.keyboard.setKeyRepeat(true)
    require("config")
