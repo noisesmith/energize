@@ -8,9 +8,14 @@
   (lume.clear phase)
   (for [_ 1 120] (table.insert phase 0)))
 
-(fn update [tick]
-  (table.remove phase)
-  (table.insert phase 1 (* 18 (math.sin (math.rad (* 8 tick))))))
+(fn update [tick complete]
+  (when (= (math.fmod tick 3) 0)
+    (table.remove phase)
+    (let [v (* 18 (math.sin (math.rad tick)))
+          v (if complete
+                (/ v (math.max 1 (/ complete 14)))
+                v)]
+      (table.insert phase 1 v))))
 
 (fn draw []
   (love.graphics.setColor 0.7 0.7 1)
