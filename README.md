@@ -48,3 +48,11 @@ https://p.hagelb.org/galaxy-transporter.jpg
 * [ ] play
 * [ ] lose
 * [ ] win
+
+## credits
+
+* [LÖVE](https://love2d.org) Copyright © 2006-2018 LOVE Development Team, distributed under the zlib license
+* [Fennel](https://github.com/bakpakin/Fennel) Copyright © 2016-2018 Calvin Rose and contributors, distributed under the MIT/X11 License
+* [lume](https://github.com/rxi/lume) Copyright © 2015-2018 rxi, distributed under the MIT/X11 License
+* [polywell](https://git.sr.ht/~technomancy/polywell) Copyright © 2015-2019 Phil Hagelberg, distributed under LGPLv3
+* [fonts](https://github.com/wrstone/fonts-startrek) distributed under GPLv3
