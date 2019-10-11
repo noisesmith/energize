@@ -1,11 +1,14 @@
 (local editor (require :polywell))
 (local lume (require :polywell.lib.lume))
+(local phase (require :phase))
+
 (var tick 0)
 
 (local bg (love.graphics.newImage "bg.png"))
 (local img (love.graphics.newImage "probe.png"))
 
 (fn update []
+  (phase.update tick)
   (set tick (+ tick 1)))
 
 (local mask-shader
@@ -30,10 +33,14 @@
   (love.graphics.setStencilTest :greater 0)
   (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ tick 255) 0.6))
   (love.graphics.rectangle :fill 38 50 104 114)
-  (love.graphics.setStencilTest))
+  (love.graphics.setStencilTest)
+  (phase.draw))
+
+(fn activate []
+  (phase.reset))
 
 {:name "energize"
- :map {"space" #(set tick 0)}
+ :map {"space" #(do (set tick 0) (phase.reset))}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
- :props {:full-draw draw :update update :read-only true}}
+ :props {:full-draw draw :update update :read-only true :activate activate}}
