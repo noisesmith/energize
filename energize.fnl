@@ -7,7 +7,7 @@
 (var complete nil)
 
 (local bg (love.graphics.newImage "bg.png"))
-(local img (love.graphics.newImage "probe.png"))
+(local img (love.graphics.newImage "klingon.png"))
 
 (fn update []
   (phase.update tick complete)
