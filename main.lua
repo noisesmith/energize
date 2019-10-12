@@ -4,6 +4,8 @@ fennel = require(fennel_module)
 table.insert(package.loaders, fennel.make_searcher({correlate=true,
                                                     moduleName = fennel_module,
                                                     useMetadata=true,}))
+package.loaded.fennel = fennel
+
 fennel.path = love.filesystem.getSource() .. "/?.fnl;" ..
    love.filesystem.getSource() .. "/?/init.fnl;" .. fennel.path
 local fennelview = require("polywell.lib.fennelview")

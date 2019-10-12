@@ -5,9 +5,9 @@ URL=https://git.sr.ht/~technomancy/energize
 AUTHOR="Justin Smith and Phil Hagelberg"
 DESCRIPTION="A game where you're the transporter operator on a starship"
 
-LIBS := $(wildcard lib/*)
-LUA := $(wildcard *.lua)
-SRC := $(wildcard *.fnl)
+LIBS := $(wildcard polywell/lib/*.lua)
+LUA := $(wildcard *.lua) polywell/old.lua polywell/frontend/love.lua polywell/frontend/init.lua
+SRC := $(wildcard *.fnl) $(wildcard polywell/*fnl) $(wildcard polywell/lib/*fnl) $(wildcard config/*fnl)
 OUT := $(patsubst %.fnl,%.lua,$(SRC))
 
 run: ; love .
@@ -16,11 +16,11 @@ count: ; cloc *.fnl
 clean: ; rm -rf releases/* $(OUT)
 cleansrc: ; rm -rf $(OUT)
 
-%.lua: %.fnl; lua polywell/lib/fennel --compile --correlate $< > $@
+%.lua: %.fnl; lua polywell/lib/fennel --compile --metadata --correlate $< > $@
 
 LOVEFILE=releases/$(NAME)-$(VERSION).love
 
-$(LOVEFILE): $(LUA) $(OUT) $(LIBS) #assets text
+$(LOVEFILE): $(LUA) $(OUT) $(LIBS) assets briefings
 	mkdir -p releases/
 	find $^ -type f | LC_ALL=C sort | env TZ=UTC zip -r -q -9 -X $@ -@
 
