@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# For some reason this runs from the usr subdirectory
+exec ../love "$@"
