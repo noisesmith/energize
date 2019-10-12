@@ -191,6 +191,10 @@ end
 
 local get_wh = function() return canvas:getDimensions() end
 
+local fullscreen_flags = {fullscreen=true,
+                          fullscreentype="desktop",
+                          resizable=false}
+
 return {
    write = function(path, contents)
       if not contents then return end
@@ -246,6 +250,8 @@ return {
 
    set_wh = function(nw, nh)
       fixed_w, fixed_h = nw, nh
+      love.window.setMode(fixed_w, fixed_h, exists("fullscreen") and
+                             fullscreen_flags)
       reset_canvas()
    end,
 
@@ -270,9 +276,7 @@ return {
          love.filesystem.write("window", w .. " " .. h)
          love.filesystem.write("fullscreen", "true")
          local dw, dh = love.window.getDesktopDimensions()
-         love.window.setMode(dw, dh, {fullscreen=true,
-                                      fullscreentype="desktop",
-                                      resizable=false})
+         love.window.setMode(dw, dh, fullscreen_flags)
          reset_canvas()
          return true
       end
