@@ -1,6 +1,7 @@
 (local editor (require :polywell))
 
 (editor.add-mode {:name "base"
+                  :map {"f11" editor.cmd.toggle-fullscreen}
                   :ctrl {"x" {:ctrl {"f" editor.cmd.find-file}
                               :map {"1" editor.cmd.split
                                     "2" (partial editor.cmd.split "vertical")
@@ -23,5 +24,7 @@
 (editor.add-mode (require :config.fennel-mode))
 (editor.add-mode (require :config.repl)) ; for fennel code
 (editor.add-mode (require :energize))
+(editor.add-mode (require :intro))
 
-(editor.init "*energize*" "energize" [""])
+(editor.init "*repl*" "repl" ["This is the repl. Enter code to run." ">> "])
+(editor.open "*intro*" "intro" {:no-file true})
