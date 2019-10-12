@@ -5,14 +5,14 @@
 (local draw (require :draw))
 
 (local (field-offset-x field-offset-y) (values 38 50))
-(local (field-height field-width) (values 80 112))
+(local (field-width field-height) (values 100 114))
 
 (local state {:tick 0
               :particle-count 0
               :complete nil
               :particle nil
               :particles []
-              :img (love.graphics.newImage "assets/klingon.png")})
+              :img (love.graphics.newImage "assets/box.png")})
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
@@ -23,6 +23,7 @@
   (set state.tick 0)
   (set state.complete nil)
   (set state.particle (make-particle))
+  (set state.particle-count 0)
   (lume.clear state.particles)
   (phase.reset)
   (sparkle.reset state.img))
@@ -62,6 +63,7 @@
     (set state.particle.h (* state.particle.h 2))
     (set state.particle (make-particle))))
 
+;; for reloadability
 (fn full-draw [] (draw.draw state))
 
 {:name "energize"
