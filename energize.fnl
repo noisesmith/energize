@@ -2,57 +2,77 @@
 (local lume (require :polywell.lib.lume))
 (local phase (require :phase))
 (local sparkle (require :sparkle))
+(local draw (require :draw))
 
-(var tick 0)
-(var complete nil)
+(local (field-offset-x field-offset-y) (values 38 50))
+(local (field-height field-width) (values 80 112))
 
-(local bg (love.graphics.newImage "bg.png"))
-(local img (love.graphics.newImage "klingon.png"))
+(local state {:tick 0
+              :particle-count 0
+              :complete nil
+              :particle nil
+              :particles []
+              :img (love.graphics.newImage "assets/klingon.png")})
+(global s state) ; for debugging in the repl
 
-(fn update []
-  (phase.update tick complete)
-  (set tick (+ tick 1))
-  (when complete (set complete (+ complete 1))))
+(fn make-particle []
+  (set state.particle-count (+ state.particle-count 1))
+  {:x (math.random (/ field-width 3)) :y 0 :w 2 :h 2 :dy 1})
 
-(local mask-shader
-       (love.graphics.newShader "vec4 effect(vec4 color, Image texture,
-                                             vec2 texture_coords, vec2 _) {
-      if (Texel(texture, texture_coords).a == 0.0) {
-         // a discarded pixel wont be applied as the stencil.
-         discard;
-      }
-      return vec4(1.0);
-   }"))
-
-(fn stencil []
-  (love.graphics.setShader mask-shader)
-  (love.graphics.draw img 38 50)
-  (love.graphics.setShader))
-
-(fn draw []
-  (love.graphics.setColor 1 1 1)
-  (love.graphics.draw bg)
-  (when (< (or complete 0) 255)
-    (love.graphics.stencil stencil)
-    (love.graphics.setStencilTest :greater 0)
-    (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ tick 255) 0.6))
-    (love.graphics.rectangle :fill 38 50 104 114)
-    (sparkle.draw 38 50 img)
-    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or 0 complete) 255)))
-    (love.graphics.rectangle :fill 38 50 104 114)
-    (love.graphics.setStencilTest))
-  (when complete
-    (love.graphics.setColor 1 1 1 (math.min (/ complete 255) 1))
-    (love.graphics.draw img 38 50))
-  (phase.draw))
-
-(fn activate []
+(fn reset []
+  (set state.tick 0)
+  (set state.complete nil)
+  (set state.particle (make-particle))
+  (lume.clear state.particles)
   (phase.reset)
-  (sparkle.reset img))
+  (sparkle.reset state.img))
+
+(local step 0.05)
+(var t 0)
+(fn update [dt]
+  (set t (+ t dt))
+  (when (< step t)
+    (set t (- t step))
+    (phase.update state.tick state.complete)
+    (set state.tick (+ state.tick 1))
+    (when state.particle
+      (set state.particle.y (+ state.particle.y state.particle.dy))
+      (set state.particle.dy (math.min 1 (+ state.particle.dy 0.3)))
+      (when (<= (+ field-offset-y field-height) state.particle.y)
+        (set state.particle (make-particle)))))
+    (when (and state.complete (< state.complete 100))
+      (set state.complete (+ state.complete 1)))
+    (when (< step t)
+      (update (- dt step))))
+
+(fn move [dir]
+  (when state.particle
+    (set state.particle.x (-> (+ state.particle.x dir)
+                              (math.min (- field-width state.particle.w))
+                              (math.max 0)))))
+
+(fn up []
+  (when state.particle
+    (set state.particle.dy -2)))
+
+(fn lock []
+  (when (and state.particle (< (phase.get) 0.5))
+    (table.insert state.particles state.particle)
+    (set state.particle.w (* state.particle.w 2))
+    (set state.particle.h (* state.particle.h 2))
+    (set state.particle (make-particle))))
+
+(fn full-draw [] (draw.draw state))
 
 {:name "energize"
- :map {"space" #(do (set tick 0) (set complete nil) (phase.reset))
-       "return" #(set complete 0)}
+ :map {"left" (partial move -1)
+       "right" (partial move 1)
+       "up" up
+       "down" lock
+       ;; for debugging:
+       "backspace" reset
+       "space" #(set (state.complete state.particle) 0)}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
- :props {:full-draw draw :update update :read-only true :activate activate}}
+ :props {:full-draw full-draw :update update
+         :read-only true :activate reset}}
