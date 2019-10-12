@@ -28,7 +28,7 @@
     (set s.x (math.fmod (+ s.x (* s.dx dt)) 320))))
 
 (fn skip []
-  (editor.open "*energize*" "energize" {:no-file true}))
+  (editor.open "*briefing*" "briefing" {:no-file true}))
 
 {:name "intro"
  :parent "base"

@@ -25,6 +25,7 @@
 (editor.add-mode (require :config.repl)) ; for fennel code
 (editor.add-mode (require :energize))
 (editor.add-mode (require :intro))
+(editor.add-mode (require :briefing))
 
 (editor.init "*repl*" "repl" ["This is the repl. Enter code to run." ">> "])
 (editor.open "*intro*" "intro" {:no-file true})
