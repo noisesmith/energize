@@ -17,17 +17,18 @@
     (table.insert dots (make-dot img))))
 
 (fn draw [x y img]
-  (love.graphics.rectangle :fill x y (img:getDimensions))
-  (love.graphics.setColor 1 1 1 0.3)
-  (let [h (img:getHeight)]
-    (each [i [lx ly len] (pairs lines)]
-      (love.graphics.line (+ x lx) (+ y ly) (+ x lx) (+ y ly len))
-      (tset (. lines i) 2 (math.fmod (+ ly 3) h)))
-    (each [i [dx dy s] (pairs dots)]
-      (love.graphics.circle :fill (+ x dx) (+ y dy)
-                            (/ (- 16 (math.abs s)) 8))
-      (tset (. dots i) 3 (- s 1))
-      (when (< s -16)
-        (tset dots i (make-dot img))))))
+  (when img
+    (love.graphics.rectangle :fill x y (img:getDimensions))
+    (love.graphics.setColor 1 1 1 0.3)
+    (let [h (img:getHeight)]
+      (each [i [lx ly len] (pairs lines)]
+        (love.graphics.line (+ x lx) (+ y ly) (+ x lx) (+ y ly len))
+        (tset (. lines i) 2 (math.fmod (+ ly 3) h)))
+      (each [i [dx dy s] (pairs dots)]
+        (love.graphics.circle :fill (+ x dx) (+ y dy)
+                              (/ (- 16 (math.abs s)) 8))
+        (tset (. dots i) 3 (- s 1))
+        (when (< s -16)
+          (tset dots i (make-dot img)))))))
 
 {:draw draw :reset reset}

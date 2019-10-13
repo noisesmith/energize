@@ -9,7 +9,7 @@
 
 (local state {:tick 0
               :particle-count 0
-              :complete nil
+              :integrity 0
               :particle nil
               :particles []
               :img (love.graphics.newImage "assets/box.png")})
@@ -21,7 +21,7 @@
 
 (fn reset []
   (set state.tick 0)
-  (set state.complete nil)
+  (set state.integrity 0)
   (set state.particle (make-particle))
   (set state.particle-count 0)
   (lume.clear state.particles)
@@ -34,17 +34,17 @@
   (set t (+ t dt))
   (when (< step t)
     (set t (- t step))
-    (phase.update state.tick state.complete)
+    (phase.update state.tick state.integrity)
     (set state.tick (+ state.tick 1))
     (when state.particle
       (set state.particle.y (+ state.particle.y state.particle.dy))
       (set state.particle.dy (math.min 1 (+ state.particle.dy 0.3)))
       (when (<= (+ field-offset-y field-height) state.particle.y)
         (set state.particle (make-particle)))))
-    (when (and state.complete (< state.complete 100))
-      (set state.complete (+ state.complete 1)))
-    (when (< step t)
-      (update (- dt step))))
+  (when (love.keyboard.isDown "space") ; debug
+    (set state.integrity (math.min (+ 1 state.integrity) 100)))
+  (when (< step t)
+    (update (- dt step))))
 
 (fn move [dir]
   (when state.particle
@@ -72,8 +72,7 @@
        "up" up
        "down" lock
        ;; for debugging:
-       "backspace" reset
-       "space" #(set (state.complete state.particle) 0)}
+       "backspace" reset}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
  :props {:full-draw full-draw :update update

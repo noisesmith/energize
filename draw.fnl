@@ -12,10 +12,10 @@
 
 (fn draw-integrity [state]
   (let [old-font (love.graphics.getFont)
-        count (tostring state.particle-count)]
+        count (tostring (or state.particle-count 0))]
     (love.graphics.setColor 1 1 1)
     (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
-    (love.graphics.printf (.. (or state.complete 0) "%") integrity-font 259 152
+    (love.graphics.printf (.. (or state.integrity 0) "%") integrity-font 259 152
                          50 "right")
     (love.graphics.printf count old-font 290 77 22 "right")
     (love.graphics.printf "3210" old-font 290 86 22 "right")
@@ -32,24 +32,25 @@
    }"))
 
 (fn stencil [state]
-  (love.graphics.setShader mask-shader)
-  (love.graphics.draw state.img 38 50)
-  (love.graphics.setShader))
+  (when state.img
+    (love.graphics.setShader mask-shader)
+    (love.graphics.draw state.img 38 50)
+    (love.graphics.setShader)))
 
 (fn draw [state]
   (love.graphics.setColor 1 1 1)
   (love.graphics.draw bg)
-  (when (< (or state.complete 0) 100)
+  (when (< (or state.integrity 0) 100)
     (love.graphics.stencil (partial stencil state))
     (love.graphics.setStencilTest :greater 0)
     (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ state.tick 255) 0.6))
     (love.graphics.rectangle :fill 38 50 104 114)
     (sparkle.draw 38 50 state.img)
-    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or 0 state.complete) 100)))
+    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or state.integrity 0) 100)))
     (love.graphics.rectangle :fill 38 50 104 114)
     (love.graphics.setStencilTest))
-  (when state.complete
-    (love.graphics.setColor 1 1 1 (math.min (/ state.complete 100) 1))
+  (when state.integrity
+    (love.graphics.setColor 1 1 1 (math.min (/ state.integrity 100) 1))
     (love.graphics.draw state.img 38 50))
   (when state.particle
     (love.graphics.setColor 0.9 0.9 0.2)

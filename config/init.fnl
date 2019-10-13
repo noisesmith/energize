@@ -26,6 +26,7 @@
 (editor.add-mode (require :energize))
 (editor.add-mode (require :intro))
 (editor.add-mode (require :briefing))
+(editor.add-mode (require :tutorial))
 
 (editor.init "*repl*" "repl" ["This is the repl. Enter code to run." ">> "])
 (editor.open "*intro*" "intro" {:no-file true})

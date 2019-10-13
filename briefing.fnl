@@ -16,7 +16,7 @@
   (love.graphics.setScissor))
 
 (fn continue []
-  (editor.open "*energize*" "energize" {:no-file true}))
+  (editor.open "*tutorial*" "tutorial" {:no-file true}))
 
 (fn scroll [dir]
   (set offset (+ offset dir)))
