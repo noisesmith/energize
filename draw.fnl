@@ -1,12 +1,17 @@
 (local phase (require :phase))
 (local sparkle (require :sparkle))
 
-(local (field-offset-x field-offset-y) (values 38 50))
-
 (local bg (love.graphics.newImage "assets/bg.png"))
 
 (fn draw-particle [{: x : y : w : h}]
-  (love.graphics.rectangle :fill (+ x field-offset-x) (+ y field-offset-y) w h))
+  (love.graphics.rectangle :fill x y w h))
+
+(fn draw-beam [state]
+  (love.graphics.setColor 0.8 0.8 0.15 0.5)
+  (let [y 17 h 153]
+    (love.graphics.rectangle :fill state.beam-x y state.beam-w h)
+    (love.graphics.rectangle :fill (- state.beam-x 2) y 4 h)
+    (love.graphics.rectangle :fill (+ state.beam-x state.beam-w -2) y 4 h)))
 
 (local integrity-font (love.graphics.newFont "assets/Trek TNG Monitors.ttf" 18))
 
@@ -53,6 +58,7 @@
     (love.graphics.setColor 1 1 1 (math.min (/ state.integrity 100) 1))
     (love.graphics.draw state.img 38 50))
   (when state.particle
+    (draw-beam state)
     (love.graphics.setColor 0.9 0.9 0.2)
     (draw-particle state.particle)
     (love.graphics.setColor 0.9 0.9 0.2 0.5)

@@ -4,20 +4,21 @@
 (local sparkle (require :sparkle))
 (local draw (require :draw))
 
-(local (field-offset-x field-offset-y) (values 38 50))
-(local (field-width field-height) (values 100 114))
-
 (local state {:tick 0
               :particle-count 0
+              :beam-x 40
+              :beam-w 12
               :integrity 0
               :particle nil
               :particles []
+              :field {:ox 38 :oy 50 :w 100 :h 114}
               :img (love.graphics.newImage "assets/box.png")})
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
   (set state.particle-count (+ state.particle-count 1))
-  {:x (math.random (/ field-width 3)) :y 0 :w 2 :h 2 :dy 1})
+  {:x (+ state.beam-x (math.random state.beam-w)) :y state.field.oy
+   :w 2 :h 2 :dy 1 :dx 2})
 
 (fn reset []
   (set state.tick 0)
@@ -28,6 +29,24 @@
   (phase.reset)
   (sparkle.reset state.img))
 
+(fn drop-particle [particle]
+  (set particle.y (+ particle.y particle.dy))
+  (set particle.x (+ particle.x particle.dx))
+  (set particle.dy (math.min 1 (+ particle.dy 0.3)))
+  (if (< particle.x state.beam-x)
+      (set particle.dx (math.abs particle.dx))
+      (< (+ state.beam-w state.beam-x) particle.x)
+      (set particle.dx (- (math.abs particle.dx))))
+  (if (<= (+ state.field.oy state.field.h) particle.y)
+      (make-particle)
+      particle))
+
+(fn move [dir]
+  (set state.beam-x (lume.clamp (+ state.beam-x dir)
+                                state.field.ox
+                                (- (+ state.field.w state.field.ox)
+                                     state.beam-w))))
+
 (local step 0.05)
 (var t 0)
 (fn update [dt]
@@ -37,20 +56,13 @@
     (phase.update state.tick state.integrity)
     (set state.tick (+ state.tick 1))
     (when state.particle
-      (set state.particle.y (+ state.particle.y state.particle.dy))
-      (set state.particle.dy (math.min 1 (+ state.particle.dy 0.3)))
-      (when (<= (+ field-offset-y field-height) state.particle.y)
-        (set state.particle (make-particle)))))
+      (set state.particle (drop-particle state.particle))))
   (when (love.keyboard.isDown "space") ; debug
     (set state.integrity (math.min (+ 1 state.integrity) 100)))
+  (when (love.keyboard.isDown "left") (move -1))
+  (when (love.keyboard.isDown "right") (move 1))
   (when (< step t)
     (update (- dt step))))
-
-(fn move [dir]
-  (when state.particle
-    (set state.particle.x (-> (+ state.particle.x dir)
-                              (math.min (- field-width state.particle.w))
-                              (math.max 0)))))
 
 (fn up []
   (when state.particle
@@ -67,9 +79,7 @@
 (fn full-draw [] (draw.draw state))
 
 {:name "energize"
- :map {"left" (partial move -1)
-       "right" (partial move 1)
-       "up" up
+ :map {"up" up
        "down" lock
        ;; for debugging:
        "backspace" reset}
