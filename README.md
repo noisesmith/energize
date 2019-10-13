@@ -5,6 +5,19 @@ room. You learn the basics of transporter operation in a series of simple
 assignments, and as you progress in rank you come across more and more
 difficult challenges.
 
+## Running during development:
+
+### Requirements
+love2d version 11 or newer https://love2d.org/
+luafilesystem (may not be required in the future)
+
+run `make` to start the game
+
+## Building for distribution
+
+### Requirements
+lua 5.1+
+
 ## Levels:
 
 * cargo box of quadrotriticale (tutorial)
