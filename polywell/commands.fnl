@@ -69,7 +69,6 @@ If it's already open, switch to the existing buffer."
   (let [current (- (lume.find state.buffers state.b) 1)
         target (+ (% (+ current (or n 1)) (# state.buffers)) 1)
         target-path (. (editor.buffer-names) target)]
-    (set state.last-buffer state.b)
     (editor.change-buffer target-path)))
 
 (fn focus-next [n]

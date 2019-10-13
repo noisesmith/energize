@@ -577,8 +577,10 @@ local change_buffer = function(path, create_if_missing)
    if not new and create_if_missing then
       new = make_buffer(path)
    end
+   local old = state.b
    state.b = assert(new, "Buffer not found: " .. path)
    state.windows[state.window][2] = state.b
+   state["last-buffer"] = old
 end
 
 local relativize_path = function(path)
