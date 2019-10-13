@@ -16,7 +16,7 @@ local reset_canvas = function()
    if fixed_w and fixed_h then
       w, h = fixed_w, fixed_h
       scale = math.floor(math.min(rw/w,rh/h))
-      canvas = love.graphics.newCanvas(rw, rh)
+      canvas = love.graphics.newCanvas(fixed_w*scale, fixed_h*scale)
       canvas:setFilter("nearest", "nearest")
    else
       canvas = love.graphics.newCanvas(rw, rh)
@@ -178,6 +178,7 @@ local wrap = function(f, ...)
    f(...)
    love.graphics.setCanvas()
    love.graphics.setColor(normalize_color({255, 255, 255}))
+   love.graphics.setScissor(0, 0, canvas:getDimensions())
    love.graphics.draw(canvas, 0, 0, 0, scale, scale)
 end
 
