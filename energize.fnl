@@ -32,7 +32,8 @@
 (fn drop-particle [particle]
   (set particle.y (+ particle.y particle.dy))
   (set particle.x (+ particle.x particle.dx))
-  (set particle.dy (math.min 1 (+ particle.dy 0.3)))
+  (set particle.dy (let [zeroed (- particle.dy 1)]
+                     (+ 1 (* zeroed 0.8))))
   (if (< particle.x state.beam-x)
       (set particle.dx (math.abs particle.dx))
       (< (+ state.beam-w state.beam-x) particle.x)
@@ -64,9 +65,9 @@
   (when (< step t)
     (update (- dt step))))
 
-(fn up []
+(fn bump [dir]
   (when state.particle
-    (set state.particle.dy -2)))
+    (set state.particle.dy dir)))
 
 (fn in-bounds? [{: x : y}]
   (and (< (+ state.field.ox 6) x (+ state.field.ox 92))
@@ -74,10 +75,10 @@
 
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
-    (table.insert state.particles state.particle)
     (set state.particle.w (* state.particle.w 2))
     (set state.particle.h (* state.particle.h 2))
     (when (in-bounds? state.particle)
+      (table.insert state.particles state.particle)
       (set state.integrity (math.min (+ 7 state.integrity) 100)))
     (set state.particle (and (< state.integrity 100) (make-particle)))))
 
@@ -85,7 +86,8 @@
 (fn full-draw [] (draw.draw state))
 
 {:name "energize"
- :map {"up" up
+ :map {"up" (partial bump -2)
+       "down" (partial bump 3)
        "space" lock
        ;; for debugging:
        "backspace" reset}
