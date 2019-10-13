@@ -10,14 +10,13 @@
               [263 108 56 70]
               [200 3 116 38]])
 
-(local msgs [["Incoming particles get assembled on the pad." 22 171 150]
-             [(.. "Use the arrow keys to direct particles; down"
-                  " arrow engages particle lock.") 262 99 55]
-             [(.. "When the pattern integrity reaches 100, you can materialize"
-                  " by pressing space.")
-              168 110 90]
+(local msgs [["Incoming particles get assembled on the pad." 26 172 150]
+             [(.. "Use the arrow keys to direct particles; space"
+                  " engages particle lock.") 262 95 55]
+             ["When the pattern integrity reaches 100, you can materialize."
+              172 110 95]
              [(.. "This is the phase discriminator. You cannot engage"
-                  " particle lock unless it is in high phase.") 210 47 116]])
+                  " particle lock unless it is in high phase.") 208 48 116]])
 
 (fn continue []
   (set step (+ step 1))
