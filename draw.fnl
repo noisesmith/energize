@@ -45,17 +45,17 @@
 (fn draw [state]
   (love.graphics.setColor 1 1 1)
   (love.graphics.draw bg)
-  (when (< (or state.integrity 0) 100)
+  (when (< (or state.progress 0) 100)
     (love.graphics.stencil (partial stencil state))
     (love.graphics.setStencilTest :greater 0)
     (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ state.tick 255) 0.6))
     (love.graphics.rectangle :fill 38 50 104 114)
     (sparkle.draw 38 50 state.img)
-    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or state.integrity 0) 100)))
+    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or state.progress 0) 100)))
     (love.graphics.rectangle :fill 38 50 104 114)
     (love.graphics.setStencilTest))
-  (when state.integrity
-    (love.graphics.setColor 1 1 1 (math.min (/ state.integrity 100) 1))
+  (when state.progress
+    (love.graphics.setColor 1 1 1 (math.min (/ state.progress 100) 1))
     (love.graphics.draw state.img 38 50))
   (when state.particle
     (draw-beam state)

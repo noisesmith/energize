@@ -5,12 +5,19 @@
 (local draw (require :draw))
 
 (local state {:tick 0
-              :particle-count 0
-              :beam-x 40
-              :beam-w 12
-              :integrity 0
               :particle nil
               :particles []
+              :particle-count 0
+              :missed 0
+
+              :beam-x 40
+              :beam-w 12
+
+              ;; how many particles have landed successfully?
+              :integrity 0
+              ;; once we're to 100% integrity, how materialized is it?
+              :progress 0
+
               :field {:ox 38 :oy 50 :w 100 :h 114}
               :img (love.graphics.newImage "assets/box.png")})
 (global s state) ; for debugging in the repl
@@ -25,6 +32,8 @@
   (set state.integrity 0)
   (set state.particle (make-particle))
   (set state.particle-count 0)
+  (set state.particle-missed 0)
+  (set state.progress 0)
   (lume.clear state.particles)
   (phase.reset)
   (sparkle.reset state.img))
@@ -60,6 +69,8 @@
       (set state.particle (drop-particle state.particle))))
   (when (love.keyboard.isDown "tab") ; debug
     (set state.integrity (math.min (+ 1 state.integrity) 100)))
+  (when (and (= 100 state.integrity) (< state.progress 100))
+    (set state.progress (+ state.progress 1)))
   (when (love.keyboard.isDown "left") (move -1))
   (when (love.keyboard.isDown "right") (move 1))
   (when (< step t)
@@ -70,16 +81,17 @@
     (set state.particle.dy dir)))
 
 (fn in-bounds? [{: x : y}]
-  (and (< (+ state.field.ox 6) x (+ state.field.ox 92))
-       (< (+ state.field.oy 70) y (+ state.field.ox 112))))
+  (and (<= (+ state.field.ox 6) x (+ state.field.ox 92))
+       (<= (+ state.field.oy 70) y (+ state.field.ox 112))))
 
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
     (set state.particle.w (* state.particle.w 2))
     (set state.particle.h (* state.particle.h 2))
-    (when (in-bounds? state.particle)
-      (table.insert state.particles state.particle)
-      (set state.integrity (math.min (+ 7 state.integrity) 100)))
+    (if (in-bounds? state.particle)
+      (do (table.insert state.particles state.particle)
+          (set state.integrity (math.min (+ 7 state.integrity) 100)))
+      (set state.particle-missed (+ state.particle-missed 1)))
     (set state.particle (and (< state.integrity 100) (make-particle)))))
 
 ;; for reloadability
