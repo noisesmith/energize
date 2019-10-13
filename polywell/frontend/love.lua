@@ -263,8 +263,13 @@ return {
 
    set_wh = function(nw, nh)
       fixed_w, fixed_h = nw, nh
-      love.window.setMode(fixed_w, fixed_h, exists("fullscreen") and
-                             fullscreen_flags)
+      if exists("fullscreen") then
+         love.window.setMode(fixed_w, fixed_h, fullscreen_flags)
+      else
+         local sw,sh = love.window.getDesktopDimensions()
+         scale = math.floor(math.min(sw/fixed_w,sh/fixed_h))
+         love.window.setMode(fixed_w*scale, fixed_h*scale)
+      end
       reset_canvas()
    end,
 

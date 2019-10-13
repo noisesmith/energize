@@ -25,6 +25,15 @@ Run `make release` to build releases for Linux, Mac, and Windows, and
 have them uploaded to itch.io using Butler. You'll need to run `butler
 login` to log into your itch.io account if you haven't done that before.
 
+## TODO:
+
+* make the gameplay more fun!
+* detect progress in the level as particles are locked
+* win animation -> next briefing -> next level
+* lose screen -> retry
+* save progress
+* level select?
+
 ## Levels:
 
 * cargo box of quadrotriticale (tutorial)
@@ -53,21 +62,13 @@ sokoban-like arrangement of particles?
 
 ## Art needed
 
-* [ ] title screen
-* [ ] mission briefing (LCARS padd w/ commander portrait?)
-* [ ] transporter pad with control panel
+* [X] title screen
+* [X] mission briefing (LCARS padd w/ commander portrait?)
+* [X] transporter pad with control panel
 * [ ] external shots between missions?
 * [ ] various characters being beamed in
 
 https://p.hagelb.org/galaxy-transporter.jpg
-
-## modes
-
-* [ ] intro
-* [ ] briefing
-* [ ] play
-* [ ] lose
-* [ ] win
 
 ## credits
 
