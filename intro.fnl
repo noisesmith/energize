@@ -34,7 +34,9 @@
  :parent "base"
  :map {"escape" skip
        "return" skip
-       "space" skip}
+       "space" skip
+       ;; for jumping straight to the game
+       "\\" #(editor.open "*energize*" "energize" {:no-file true})}
  :props {:full-draw draw
          :update update
          :read-only true}}
