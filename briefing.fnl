@@ -16,6 +16,7 @@
   (love.graphics.setScissor))
 
 (fn continue []
+  (editor.kill-buffer)
   (editor.open "*tutorial*" "tutorial" {:no-file true}))
 
 (fn scroll [dir]

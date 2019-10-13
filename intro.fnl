@@ -28,6 +28,7 @@
     (set s.x (math.fmod (+ s.x (* s.dx dt)) 320))))
 
 (fn skip []
+  (editor.kill-buffer)
   (editor.open "*briefing*" "briefing" {:no-file true}))
 
 {:name "intro"

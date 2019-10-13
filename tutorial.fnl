@@ -22,6 +22,7 @@
 (fn continue []
   (set step (+ step 1))
   (when (not (. msgs step))
+    (editor.kill-buffer)
     (editor.open "*energize*" "energize" {:no-file true})))
 
 (fn draw-tutorial []
