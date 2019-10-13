@@ -5,6 +5,26 @@ room. You learn the basics of transporter operation in a series of simple
 assignments, and as you progress in rank you come across more and more
 difficult challenges.
 
+## Running during development:
+
+### Requirements
+* love2d version 11 or newer https://love2d.org/
+* luafilesystem (provides better completion for in-game editor)
+
+run `make` to start the game
+
+## Building for distribution
+
+### Requirements
+
+* lua 5.1+ (for AOT compilation)
+* [butler](https://itch.io/docs/butler/installing.html)
+* an itch.io account
+
+Run `make release` to build releases for Linux, Mac, and Windows, and
+have them uploaded to itch.io using Butler. You'll need to run `butler
+login` to log into your itch.io account if you haven't done that before.
+
 ## Levels:
 
 * cargo box of quadrotriticale (tutorial)

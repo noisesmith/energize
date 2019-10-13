@@ -1,5 +1,9 @@
 (local editor (require :polywell))
 
+(assert (not= 0 love._version_major)
+        (.. "This game requires LOVE 11.x or greater!\n\n"
+            "Please download it from https://love2d.org."))
+
 (editor.add-mode {:name "base"
                   :map {"f11" editor.cmd.toggle-fullscreen}
                   :ctrl {"x" {:ctrl {"f" editor.cmd.find-file}
