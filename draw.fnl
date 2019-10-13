@@ -59,11 +59,12 @@
     (love.graphics.draw state.img 38 50))
   (when state.particle
     (draw-beam state)
-    (love.graphics.setColor 0.9 0.9 0.2)
-    (draw-particle state.particle)
-    (love.graphics.setColor 0.9 0.9 0.2 0.5)
-    (each [_ p (pairs state.particles)]
-      (draw-particle p)))
+    (when (< state.integrity 100)
+      (love.graphics.setColor 0.9 0.9 0.2)
+      (draw-particle state.particle)
+      (love.graphics.setColor 0.9 0.9 0.2 0.5)
+      (each [_ p (pairs state.particles)]
+        (draw-particle p))))
   (draw-integrity state)
   (phase.draw))
 

@@ -57,7 +57,7 @@
     (set state.tick (+ state.tick 1))
     (when state.particle
       (set state.particle (drop-particle state.particle))))
-  (when (love.keyboard.isDown "space") ; debug
+  (when (love.keyboard.isDown "tab") ; debug
     (set state.integrity (math.min (+ 1 state.integrity) 100)))
   (when (love.keyboard.isDown "left") (move -1))
   (when (love.keyboard.isDown "right") (move 1))
@@ -68,19 +68,25 @@
   (when state.particle
     (set state.particle.dy -2)))
 
+(fn in-bounds? [{: x : y}]
+  (and (< (+ state.field.ox 6) x (+ state.field.ox 92))
+       (< (+ state.field.oy 70) y (+ state.field.ox 112))))
+
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
     (table.insert state.particles state.particle)
     (set state.particle.w (* state.particle.w 2))
     (set state.particle.h (* state.particle.h 2))
-    (set state.particle (make-particle))))
+    (when (in-bounds? state.particle)
+      (set state.integrity (math.min (+ 7 state.integrity) 100)))
+    (set state.particle (and (< state.integrity 100) (make-particle)))))
 
 ;; for reloadability
 (fn full-draw [] (draw.draw state))
 
 {:name "energize"
  :map {"up" up
-       "down" lock
+       "space" lock
        ;; for debugging:
        "backspace" reset}
  :parent "base"
