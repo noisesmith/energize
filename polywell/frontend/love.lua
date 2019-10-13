@@ -4,7 +4,7 @@
 local lume = require("polywell.lib.lume")
 local row_height, scroll_rows, em, w, h
 local padding, buffer_padding, offset = 10, 0, 0
-local _, lfs = pcall(require, "lfs")
+local lfs_ok, lfs = pcall(require, "lfs")
 local canvas, fixed_w, fixed_h
 local scale = 1
 
@@ -182,7 +182,7 @@ local wrap = function(f, ...)
 end
 
 local resolve = function(path)
-   if(lfs and not path:find("^/")) then
+   if(lfs_ok and not path:find("^/")) then
       return lfs.currentdir() .. "/" .. path
    else
       return path
@@ -195,6 +195,33 @@ local fullscreen_flags = {fullscreen=true,
                           fullscreentype="desktop",
                           resizable=false}
 
+-- prefer lfs because it works outside love project dir, but fall back to love
+local lfs_type = function(path)
+   return (lfs.attributes(resolve(path)) or {}).mode
+end
+
+local love_type = function(path)
+   return love.filesystem.getInfo(path).type
+end
+
+local lfs_ls = function(path)
+   local parts = lume.split(path, "/")
+   path = table.concat(parts, "/")
+   if path == "" then path = "." end
+   local t = {}
+   pcall(function() for f in lfs.dir(resolve(path)) do
+            if f ~= "." and f ~= ".." then
+               if path ~= "." then f = path .. "/" .. f end
+               table.insert(t, f)
+            end
+   end end)
+   return t
+end
+
+local love_ls = function(path)
+   return love.filesystem.getDirectoryItems(path)
+end
+
 return {
    write = function(path, contents)
       if not contents then return end
@@ -205,22 +232,8 @@ return {
    read = function(path)
       return(table.concat(lume.array(io.lines(resolve(path))), "\n"))
    end,
-   ["type"] = lfs and function(path)
-      return (lfs.attributes(resolve(path)) or {}).mode
-   end,
-   ls = lfs and function(path)
-      local parts = lume.split(path, "/")
-      path = table.concat(parts, "/")
-      if path == "" then path = "." end
-      local t = {}
-      pcall(function() for f in lfs.dir(resolve(path)) do
-               if f ~= "." and f ~= ".." then
-                  if path ~= "." then f = path .. "/" .. f end
-                  table.insert(t, f)
-               end
-      end end)
-      return t
-   end,
+   ["type"] = lfs_ok and lfs_type or love_type,
+   ls = lfs_ok and lfs_ls or love_ls,
 
    ["key-down?"] = love.keyboard.isScancodeDown or love.keyboard.isDown,
    set_cursor = function(cursor)
