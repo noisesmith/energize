@@ -1,13 +1,13 @@
 (local editor (require :polywell))
 (local state (require :polywell.state))
 
-(fn editor.cmd.switch-to-repl []
-  "Go directly to *repl*"
-  (let [target "*repl*"
-        last-buffer (or (editor.last-buffer) target)]
-    (when (lume.find (editor.buffer-names) target)
-      (set state.last-buffer last-buffer)
-      (editor.change-buffer target))))
+(fn editor.cmd.goto-buffer [target]
+  "Create a command to go directly to a buffer"
+  (fn []
+    (let [last-buffer (or (editor.last-buffer) target)]
+      (when (lume.find (editor.buffer-names) target)
+        (set state.last-buffer last-buffer)
+        (editor.change-buffer target)))))
 
 (editor.add-mode {:name "base"
                   :map {"f11" editor.cmd.toggle-fullscreen}
@@ -18,7 +18,7 @@
                                     "4" (partial editor.cmd.split "triple")
                                     "b" editor.cmd.switch-buffer
                                     "k" editor.cmd.close
-                                    "r" editor.cmd.switch-to-repl
+                                    "r" (editor.cmd.goto-buffer "*repl*")
                                     "o" editor.cmd.focus-next
                                     "=" editor.cmd.scale
                                     "-" (partial editor.cmd.scale -1)}}
