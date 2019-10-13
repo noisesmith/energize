@@ -250,9 +250,9 @@ return {
 
    set_wh = function(nw, nh)
       fixed_w, fixed_h = nw, nh
+      love.window.setMode(fixed_w, fixed_h, exists("fullscreen") and
+                             fullscreen_flags)
       reset_canvas()
-      love.window.setMode(fixed_w*scale, fixed_h*scale,
-                          exists("fullscreen") and fullscreen_flags)
    end,
 
    set_scale = function(s) scale = s reset_canvas() end,
