@@ -13,6 +13,7 @@
                                     "4" (partial editor.cmd.split "triple")
                                     "b" editor.cmd.switch-buffer
                                     "k" editor.cmd.close
+                                    "r" (partial editor.change-buffer "*repl*")
                                     "o" editor.cmd.focus-next
                                     "=" editor.cmd.scale
                                     "-" (partial editor.cmd.scale -1)}}
