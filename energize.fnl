@@ -6,7 +6,8 @@
 
 (local state {:tick 0
               :particle nil
-              :particles []
+              :chunks [] ; filled in
+              :total-chunks 10
               :particle-count 0
               :missed 0
 
@@ -34,7 +35,7 @@
   (set state.particle-count 0)
   (set state.particle-missed 0)
   (set state.progress 0)
-  (lume.clear state.particles)
+  (lume.clear state.chunks)
   (phase.reset)
   (sparkle.reset state.img))
 
@@ -81,22 +82,26 @@
   (when state.particle
     (set state.particle.dy dir)))
 
+(local chunk-size 24)
+
 (fn find-chunk [{: x : y} img]
   ;; TODO: support other shapes
-  (and (<= (+ state.field.ox 6) x (+ state.field.ox 92))
-       (<= (+ state.field.oy 70) y (+ state.field.ox 112))))
+  (if (and (<= (+ state.field.ox 6) x (+ state.field.ox 92))
+           (<= (+ state.field.oy 70) y (+ state.field.ox 112)))
+      (let [cx (- x (math.fmod x chunk-size))
+            cy (- y (math.fmod y chunk-size))]
+        {:x cx :y cy :w chunk-size :h chunk-size :id (.. cx "x" cy)})))
 
 (fn lock-success [particle chunk]
-  ;; TODO: fill nearest subject chunk
   (set particle.w (* particle.w 2))
   (set particle.h (* particle.h 2))
-  (table.insert state.particles particle)
-  (set state.integrity (math.min (+ (math.random 10) state.integrity) 100)))
+  (table.insert state.chunks chunk)
+  (set state.integrity (* 100 (/ (# state.chunks) state.total-chunks))))
 
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
     (let [chunk (find-chunk state.particle state.img)]
-      (if chunk
+      (if (and chunk (not (lume.find (lume.map state.chunks :id) chunk.id)))
           (lock-success state.particle chunk)
           (set state.particle-missed (+ state.particle-missed 1))))
     (set state.particle (and (< state.integrity 100) (make-particle)))))

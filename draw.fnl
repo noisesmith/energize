@@ -63,8 +63,10 @@
       (love.graphics.setColor 0.9 0.9 0.2)
       (draw-particle state.particle)
       (love.graphics.setColor 0.9 0.9 0.2 0.5)
-      (each [_ p (pairs state.particles)]
-        (draw-particle p))))
+      (love.graphics.setStencilTest :greater 0)
+      (each [_ c (pairs state.chunks)]
+        (draw-particle c))
+      (love.graphics.setStencilTest)))
   (draw-integrity state)
   (phase.draw))
 
