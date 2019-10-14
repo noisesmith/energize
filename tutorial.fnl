@@ -8,7 +8,8 @@
 (local rects [[21 17 133 150]
               [207 95 54 80]
               [200 3 116 38]
-              [263 108 56 70]])
+              [263 108 56 70]
+              [262 78 58 28]])
 
 (local msgs [[(.. "Incoming particles get assembled on the pad."
                   " Space engages particle lock.") 26 168 150]
@@ -17,7 +18,10 @@
              [(.. "This is the phase discriminator. You cannot engage"
                   " particle lock unless it is in high phase.") 208 48 116]
              ["When the pattern integrity hits 100, materialization will begin."
-              168 110 95]])
+              168 110 95]
+             [(.. "Only a limited number of particles may be used before pattern"
+                  " degradation sets in.")
+              160 78 100]])
 
 (fn continue []
   (set step (+ step 1))

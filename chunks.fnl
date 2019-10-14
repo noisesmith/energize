@@ -29,7 +29,6 @@
       (and (> size 4) (any-inside? x y (/ size 2) img-data))))
 
 (fn chunks-for [img-data field]
-  (print :new)
   (let [chunks []]
     (for [x 0 field.w size]
       (for [y 0 field.h size]

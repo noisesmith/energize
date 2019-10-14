@@ -16,14 +16,16 @@
 (local integrity-font (love.graphics.newFont "assets/Trek TNG Monitors.ttf" 18))
 (local font (love.graphics.getFont "assets/Anonymous Pro.ttf" 10))
 
-(fn draw-integrity [{: particle-count : integrity : particle-missed : beam-x}]
+(fn draw-integrity [{: particle-count : integrity : particle-missed : max}]
   (love.graphics.setColor 1 1 1)
   (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
   (love.graphics.printf (.. (math.floor (or integrity 0)) "%")
                         integrity-font 259 152 50 "right")
-  (love.graphics.printf (tostring beam-x) font 290 86 22 "right")
-  (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
-  (love.graphics.printf (tostring (or particle-missed 0))
+  (love.graphics.printf (tostring (or particle-count "lock"))
+                        font 290 77 22 "right")
+  (love.graphics.printf (tostring (or particle-missed "lost"))
+                        font 290 86 22 "right")
+  (love.graphics.printf (tostring (or max "max"))
                         font 290 95 22 "right"))
 
 (local mask-shader

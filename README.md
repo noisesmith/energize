@@ -30,19 +30,19 @@ login` to log into your itch.io account if you haven't done that before.
 * [ ] make the gameplay more fun!
 * [X] detect progress in the level as particles are locked
 * [X] win animation -> next briefing -> next level
-* [ ] lose screen -> retry
+* [X] lose screen -> retry
 * [ ] save progress
 * [ ] level select?
 
 ## Levels:
 
-* cargo box of quadrotriticale (tutorial)
-* one person
-* several people
-* falling person?
-* person wearing an unauthorized weapon?
-* reversing a transporter accident
-* Tuvix??
+* [X] cargo box of quadrotriticale (tutorial)
+* [X] one person
+* [ ] several people
+* [ ] falling person?
+* [ ] person wearing an unauthorized weapon?
+* [ ] reversing a transporter accident
+* [ ] Tuvix??
 
 We should see if we can incorporate some backstory for the characters
 beaming in.
