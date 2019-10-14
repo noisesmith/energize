@@ -52,6 +52,7 @@
       particle))
 
 (fn move [dir]
+  ;; TODO: temporarily widen beam when moving?
   (set state.beam-x (lume.clamp (+ state.beam-x dir)
                                 state.field.ox
                                 (- (+ state.field.w state.field.ox)
@@ -63,7 +64,7 @@
   (set t (+ t dt))
   (when (< step t)
     (set t (- t step))
-    (phase.update state.tick state.integrity)
+    (phase.update state.tick state.progress)
     (set state.tick (+ state.tick 1))
     (when state.particle
       (set state.particle (drop-particle state.particle))))
@@ -80,18 +81,24 @@
   (when state.particle
     (set state.particle.dy dir)))
 
-(fn in-bounds? [{: x : y}]
+(fn find-chunk [{: x : y} img]
+  ;; TODO: support other shapes
   (and (<= (+ state.field.ox 6) x (+ state.field.ox 92))
        (<= (+ state.field.oy 70) y (+ state.field.ox 112))))
 
+(fn lock-success [particle chunk]
+  ;; TODO: fill nearest subject chunk
+  (set particle.w (* particle.w 2))
+  (set particle.h (* particle.h 2))
+  (table.insert state.particles particle)
+  (set state.integrity (math.min (+ (math.random 10) state.integrity) 100)))
+
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
-    (set state.particle.w (* state.particle.w 2))
-    (set state.particle.h (* state.particle.h 2))
-    (if (in-bounds? state.particle)
-      (do (table.insert state.particles state.particle)
-          (set state.integrity (math.min (+ 7 state.integrity) 100)))
-      (set state.particle-missed (+ state.particle-missed 1)))
+    (let [chunk (find-chunk state.particle state.img)]
+      (if chunk
+          (lock-success state.particle chunk)
+          (set state.particle-missed (+ state.particle-missed 1))))
     (set state.particle (and (< state.integrity 100) (make-particle)))))
 
 ;; for reloadability
@@ -102,7 +109,8 @@
        "down" (partial bump 3)
        "space" lock
        ;; for debugging:
-       "backspace" reset}
+       "backspace" reset
+       "`" #(set state.img (love.graphics.newImage "assets/klingon.png"))}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
  :props {:full-draw full-draw :update update

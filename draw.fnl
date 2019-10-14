@@ -14,17 +14,17 @@
     (love.graphics.rectangle :fill (+ state.beam-x state.beam-w -2) y 4 h)))
 
 (local integrity-font (love.graphics.newFont "assets/Trek TNG Monitors.ttf" 18))
+(local font (love.graphics.getFont "assets/Anonymous Pro.ttf" 10))
 
-(fn draw-integrity [state]
-  (let [old-font (love.graphics.getFont)
-        count (tostring (or state.particle-count 0))]
-    (love.graphics.setColor 1 1 1)
-    (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
-    (love.graphics.printf (.. (or state.integrity 0) "%") integrity-font 259 152
-                         50 "right")
-    (love.graphics.printf count old-font 290 77 22 "right")
-    (love.graphics.printf "3210" old-font 290 86 22 "right")
-    (love.graphics.printf "238" old-font 290 95 22 "right")))
+(fn draw-integrity [{: particle-count : integrity : particle-missed}]
+  (love.graphics.setColor 1 1 1)
+  (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
+  (love.graphics.printf (.. (or integrity 0) "%") integrity-font 259 152
+                        50 "right")
+  (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
+  (love.graphics.printf "3210" font 290 86 22 "right")
+  (love.graphics.printf (tostring (or particle-missed 0))
+                        font 290 95 22 "right"))
 
 (local mask-shader
        (love.graphics.newShader "vec4 effect(vec4 color, Image texture,

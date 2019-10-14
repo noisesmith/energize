@@ -8,12 +8,10 @@
   (lume.clear phase)
   (for [_ 1 120] (table.insert phase 0)))
 
-(fn update [tick integrity]
+(fn update [tick progress]
   (table.remove phase)
   (let [v (* 18 (math.sin (math.rad (* tick 6))))
-        v (if integrity
-              (/ v (math.max 1 (/ integrity 8)))
-              v)]
+        v (/ v (math.max 1 (/ (or progress 0) 8)))]
     (table.insert phase 1 v)))
 
 (fn draw []
