@@ -25,7 +25,7 @@
     (editor.open "*energize*" "energize" {:no-file true})))
 
 (fn draw-tutorial []
-  (draw.draw {:tick 0})
+  (draw.draw {:tick 0 :field {:ox 38 :oy 48 :w 100 :h 114}})
   (love.graphics.stencil #(love.graphics.rectangle :fill (unpack (. rects step))))
   (love.graphics.setStencilTest :less 1)
   (love.graphics.setColor 0 0 0 0.8)
@@ -38,6 +38,9 @@
 {:name "tutorial"
  :parent "energize"
  :map {"space" continue
-       "return" continue}
+       "return" continue
+       "up" #(set step (math.max 1 (- step 1)))
+       "down" continue
+       "escape" #(editor.open "*energize*" "energize" {:no-file true})}
  :props {:full-draw draw-tutorial
          :read-only true}}

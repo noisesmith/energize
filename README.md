@@ -27,12 +27,12 @@ login` to log into your itch.io account if you haven't done that before.
 
 ## TODO:
 
-* make the gameplay more fun!
-* detect progress in the level as particles are locked
-* win animation -> next briefing -> next level
-* lose screen -> retry
-* save progress
-* level select?
+* [ ] make the gameplay more fun!
+* [X] detect progress in the level as particles are locked
+* [ ] win animation -> next briefing -> next level
+* [ ] lose screen -> retry
+* [ ] save progress
+* [ ] level select?
 
 ## Levels:
 

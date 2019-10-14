@@ -16,13 +16,13 @@
 (local integrity-font (love.graphics.newFont "assets/Trek TNG Monitors.ttf" 18))
 (local font (love.graphics.getFont "assets/Anonymous Pro.ttf" 10))
 
-(fn draw-integrity [{: particle-count : integrity : particle-missed}]
+(fn draw-integrity [{: particle-count : integrity : particle-missed : beam-x}]
   (love.graphics.setColor 1 1 1)
   (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
   (love.graphics.printf (.. (math.floor (or integrity 0)) "%")
                         integrity-font 259 152 50 "right")
   (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
-  (love.graphics.printf "3210" font 290 86 22 "right")
+  (love.graphics.printf (tostring beam-x) font 290 86 22 "right")
   (love.graphics.printf (tostring (or particle-missed 0))
                         font 290 95 22 "right"))
 
@@ -58,22 +58,21 @@
     (when state.progress
       (love.graphics.setColor 1 1 1 (math.min (/ state.progress 100) 1))
       (love.graphics.draw state.img ox oy)))
-  (when state.particle
+  (when (and state.particle (< state.integrity 100))
     (draw-beam state)
-    (when (< state.integrity 100)
-      (love.graphics.setColor 0.9 0.9 0.2)
-      (draw-particle state.particle)
-      (love.graphics.setStencilTest :greater 0)
-      (each [_ c (pairs state.chunks)]
-        (when (and (love.keyboard.isDown "y") (not c.on)) ; debug
-          (love.graphics.setColor 0.8 0.2 0.2 0.5)
-          (love.graphics.setStencilTest)
-          (draw-particle c)
-          (love.graphics.setStencilTest :greater 0))
-        (when c.on
-          (love.graphics.setColor 0.9 0.9 0.2 0.5)
-          (draw-particle c)))
-      (love.graphics.setStencilTest)))
+    (love.graphics.setColor 0.9 0.9 0.2)
+    (draw-particle state.particle)
+    (love.graphics.setStencilTest :greater 0)
+    (each [_ c (pairs state.chunks)]
+      (when (and (love.keyboard.isDown "y") (not c.on)) ; debug
+        (love.graphics.setColor 0.8 0.2 0.2 0.5)
+        (love.graphics.setStencilTest)
+        (draw-particle c)
+        (love.graphics.setStencilTest :greater 0))
+      (when c.on
+        (love.graphics.setColor 0.9 0.9 0.2 0.5)
+        (draw-particle c)))
+    (love.graphics.setStencilTest))
   (draw-integrity state)
   (phase.draw))
 
