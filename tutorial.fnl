@@ -5,18 +5,19 @@
 
 (var step 1)
 
-(local rects [[21 17 133 153]
+(local rects [[21 17 133 150]
               [207 95 54 80]
-              [263 108 56 70]
-              [200 3 116 38]])
+              [200 3 116 38]
+              [263 108 56 70]])
 
-(local msgs [["Incoming particles get assembled on the pad." 26 172 150]
-             [(.. "Use the arrow keys to direct particles; space"
-                  " engages particle lock.") 262 95 55]
-             ["When the pattern integrity reaches 100, you can materialize."
-              172 110 95]
+(local msgs [[(.. "Incoming particles get assembled on the pad."
+                  " Space engages particle lock.") 26 168 150]
+             [(.. "Use the arrow keys to direct the annular"
+                  " confinement beam.") 262 99 55]
              [(.. "This is the phase discriminator. You cannot engage"
-                  " particle lock unless it is in high phase.") 208 48 116]])
+                  " particle lock unless it is in high phase.") 208 48 116]
+             ["When the pattern integrity hits 100, materialization will begin."
+              168 110 95]])
 
 (fn continue []
   (set step (+ step 1))
