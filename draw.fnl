@@ -21,8 +21,8 @@
   (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
   (love.graphics.printf (.. (math.floor (or integrity 0)) "%")
                         integrity-font 259 152 50 "right")
-  (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
   (love.graphics.printf (tostring beam-x) font 290 86 22 "right")
+  (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
   (love.graphics.printf (tostring (or particle-missed 0))
                         font 290 95 22 "right"))
 

@@ -19,6 +19,7 @@
   (love.graphics.setScissor))
 
 (fn continue []
+  (set offset 0)
   (editor.kill-buffer)
   (if (= 1 (editor.get-prop :level 1))
       (editor.open "*tutorial*" "tutorial" true)

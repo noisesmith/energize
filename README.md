@@ -29,7 +29,7 @@ login` to log into your itch.io account if you haven't done that before.
 
 * [ ] make the gameplay more fun!
 * [X] detect progress in the level as particles are locked
-* [ ] win animation -> next briefing -> next level
+* [X] win animation -> next briefing -> next level
 * [ ] lose screen -> retry
 * [ ] save progress
 * [ ] level select?

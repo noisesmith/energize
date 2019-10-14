@@ -27,7 +27,6 @@
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
-  (set state.particle-count (+ state.particle-count 1))
   {:x (+ state.beam-x (math.random state.beam-w)) :y state.field.oy
    :w 2 :h 2 :dy 1 :dx 2})
 
@@ -67,6 +66,10 @@
                                 (- (+ state.field.w state.field.ox)
                                      state.beam-w))))
 
+(fn win-level []
+  (set state.level (+ state.level 1))
+  (editor.open "*briefing*" "briefing" true {:level state.level}))
+
 (local step 0.05)
 (var t 0)
 (fn update [dt]
@@ -76,15 +79,17 @@
     (phase.update state.tick state.progress)
     (set state.tick (+ state.tick 1))
     (when state.particle
-      (set state.particle (drop-particle state.particle))))
-  (when (love.keyboard.isDown "tab") ; debug
-    (set state.integrity (math.min (+ 1 state.integrity) 100)))
-  (when (and (= 100 state.integrity) (< state.progress 100))
-    (set state.progress (+ state.progress 1)))
-  (when (love.keyboard.isDown "left") (move -1))
-  (when (love.keyboard.isDown "right") (move 1))
-  (when (< step t)
-    (update (- dt step))))
+      (set state.particle (drop-particle state.particle)))
+    (when (love.keyboard.isDown "tab") ; debug
+      (set state.integrity (math.min (+ 1 state.integrity) 100)))
+    (when (= 100 state.integrity)
+      (set state.progress (+ state.progress 1))
+      (when (< 136 state.progress)
+        (win-level)))
+    (when (love.keyboard.isDown "left") (move -1))
+    (when (love.keyboard.isDown "right") (move 1))
+    (when (< step t)
+      (update (- dt step)))))
 
 (fn bump [dir]
   (when state.particle
@@ -93,26 +98,21 @@
 (fn lock-success [particle chunk]
   (set particle.w (* particle.w 2))
   (set particle.h (* particle.h 2))
+  (set state.particle-count (+ state.particle-count 1))
   (set chunk.on true)
   (set state.integrity (* 100 (/ (# (lume.filter state.chunks :on))
                                  (# state.chunks)))))
 
-(fn win-level []
-  (set state.level (+ state.level 1))
-  (editor.open "*briefing*" "briefing" true {:level state.level}))
-
 (fn lock []
-  (if (= state.progress 100)
-      (win-level)
-      (when (and state.particle (or (< (phase.get) 0.5)
-                                    ;; debugging
-                                    (love.keyboard.isDown "lshift" "rshift")))
-        (let [chunk (chunks.find state.field state.particle
-                                 state.img-data state.chunks)]
-          (if (and chunk (not chunk.on))
-              (lock-success state.particle chunk)
-              (set state.particle-missed (+ state.particle-missed 1))))
-        (set state.particle (and (< state.integrity 100) (make-particle))))))
+  (when (and state.particle (or (< (phase.get) 0.5)
+                                ;; debugging
+                                (love.keyboard.isDown "lshift" "rshift")))
+    (let [chunk (chunks.find state.field state.particle
+                             state.img-data state.chunks)]
+      (if (and chunk (not chunk.on))
+          (lock-success state.particle chunk)
+          (set state.particle-missed (+ state.particle-missed 1))))
+    (set state.particle (and (< state.integrity 100) (make-particle)))))
 
 ;; for reloadability
 (fn full-draw [] (draw.draw state))
