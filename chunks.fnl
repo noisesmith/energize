@@ -19,14 +19,21 @@
     (and (inside-img? relx rely img-data)
          (lume.match chunks (partial hit? x y)))))
 
+(fn any-inside? [x y size img-data]
+  (or (inside-img? x y img-data)
+      (inside-img? (+ x size -1) y img-data)
+      (inside-img? x (+ y size -1) img-data)
+      (inside-img? (+ x size -1) (+ y size -1) img-data)
+      ;; checking the corners isn't good enough; need to
+      ;; recurse down to a minimum granularity
+      (and (> size 4) (any-inside? x y (/ size 2) img-data))))
+
 (fn chunks-for [img-data field]
+  (print :new)
   (let [chunks []]
-    (for [y 0 field.h size]
-      (for [x 0 field.w size]
-        (when (or (inside-img? x y img-data)
-                  (inside-img? (+ x size) y img-data)
-                  (inside-img? x (+ y size) img-data)
-                  (inside-img? (+ x size) (+ y size) img-data))
+    (for [x 0 field.w size]
+      (for [y 0 field.h size]
+        (when (any-inside? x y size img-data)
           (table.insert chunks {:x (+ x field.ox)
                                 :y (+ y field.oy)
                                 :w size :h size

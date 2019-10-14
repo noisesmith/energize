@@ -19,8 +19,8 @@
 (fn draw-integrity [{: particle-count : integrity : particle-missed}]
   (love.graphics.setColor 1 1 1)
   (love.graphics.printf "PATTERN\nINTEGRITY" integrity-font 264 105 100 "left")
-  (love.graphics.printf (.. (or integrity 0) "%") integrity-font 259 152
-                        50 "right")
+  (love.graphics.printf (.. (math.floor (or integrity 0)) "%")
+                        integrity-font 259 152 50 "right")
   (love.graphics.printf (tostring (or particle-count 0)) font 290 77 22 "right")
   (love.graphics.printf "3210" font 290 86 22 "right")
   (love.graphics.printf (tostring (or particle-missed 0))
@@ -39,24 +39,25 @@
 (fn stencil [state]
   (when state.img
     (love.graphics.setShader mask-shader)
-    (love.graphics.draw state.img 38 50)
+    (love.graphics.draw state.img state.field.ox state.field.oy)
     (love.graphics.setShader)))
 
 (fn draw [state]
   (love.graphics.setColor 1 1 1)
   (love.graphics.draw bg)
-  (when (< (or state.progress 0) 100)
-    (love.graphics.stencil (partial stencil state))
-    (love.graphics.setStencilTest :greater 0)
-    (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ state.tick 255) 0.6))
-    (love.graphics.rectangle :fill 38 50 104 114)
-    (sparkle.draw 38 50 state.img)
-    (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or state.progress 0) 100)))
-    (love.graphics.rectangle :fill 38 50 104 114)
-    (love.graphics.setStencilTest))
-  (when state.progress
-    (love.graphics.setColor 1 1 1 (math.min (/ state.progress 100) 1))
-    (love.graphics.draw state.img 38 50))
+  (let [{: ox : oy : w : h} state.field]
+    (when (< (or state.progress 0) 100)
+      (love.graphics.stencil (partial stencil state))
+      (love.graphics.setStencilTest :greater 0)
+      (love.graphics.setColor 0.1 0.3 0.8 (math.min (/ state.tick 255) 0.6))
+      (love.graphics.rectangle :fill ox oy w h)
+      (sparkle.draw ox oy state.img)
+      (love.graphics.setColor 0.1 0.1 0.1 (- 0.5 (/ (or state.progress 0) 100)))
+      (love.graphics.rectangle :fill ox oy w h)
+      (love.graphics.setStencilTest))
+    (when state.progress
+      (love.graphics.setColor 1 1 1 (math.min (/ state.progress 100) 1))
+      (love.graphics.draw state.img ox oy)))
   (when state.particle
     (draw-beam state)
     (when (< state.integrity 100)
