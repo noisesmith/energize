@@ -62,10 +62,16 @@
     (when (< state.integrity 100)
       (love.graphics.setColor 0.9 0.9 0.2)
       (draw-particle state.particle)
-      (love.graphics.setColor 0.9 0.9 0.2 0.5)
       (love.graphics.setStencilTest :greater 0)
       (each [_ c (pairs state.chunks)]
-        (draw-particle c))
+        (when (and (love.keyboard.isDown "y") (not c.on)) ; debug
+          (love.graphics.setColor 0.8 0.2 0.2 0.5)
+          (love.graphics.setStencilTest)
+          (draw-particle c)
+          (love.graphics.setStencilTest :greater 0))
+        (when c.on
+          (love.graphics.setColor 0.9 0.9 0.2 0.5)
+          (draw-particle c)))
       (love.graphics.setStencilTest)))
   (draw-integrity state)
   (phase.draw))

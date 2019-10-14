@@ -3,13 +3,13 @@
 (local phase (require :phase))
 (local sparkle (require :sparkle))
 (local draw (require :draw))
+(local chunks (require :chunks))
 
 (local state {:tick 0
               :particle nil
               :chunks [] ; filled in
-              :total-chunks 10
               :particle-count 0
-              :missed 0
+              :particle-missed 0
 
               :beam-x 40
               :beam-w 12
@@ -19,8 +19,9 @@
               ;; once we're to 100% integrity, how materialized is it?
               :progress 0
 
-              :field {:ox 38 :oy 50 :w 100 :h 114}
-              :img (love.graphics.newImage "assets/box.png")})
+              :field {:ox 38 :oy 48 :w 100 :h 114}
+              :img nil
+              :filename "assets/box.png"})
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
@@ -35,7 +36,9 @@
   (set state.particle-count 0)
   (set state.particle-missed 0)
   (set state.progress 0)
-  (lume.clear state.chunks)
+  (set state.img-data (love.image.newImageData state.filename))
+  (set state.img (love.graphics.newImage state.img-data))
+  (set state.chunks (chunks.for state.img-data state.field))
   (phase.reset)
   (sparkle.reset state.img))
 
@@ -49,7 +52,8 @@
       (< (+ state.beam-w state.beam-x) particle.x)
       (set particle.dx (- (math.abs particle.dx))))
   (if (<= (+ state.field.oy state.field.h) particle.y)
-      (make-particle)
+      (do (set state.particle-missed (+ state.particle-missed 1))
+          (make-particle))
       particle))
 
 (fn move [dir]
@@ -82,26 +86,20 @@
   (when state.particle
     (set state.particle.dy dir)))
 
-(local chunk-size 24)
-
-(fn find-chunk [{: x : y} img]
-  ;; TODO: support other shapes
-  (if (and (<= (+ state.field.ox 6) x (+ state.field.ox 92))
-           (<= (+ state.field.oy 70) y (+ state.field.ox 112)))
-      (let [cx (- x (math.fmod x chunk-size))
-            cy (- y (math.fmod y chunk-size))]
-        {:x cx :y cy :w chunk-size :h chunk-size :id (.. cx "x" cy)})))
-
 (fn lock-success [particle chunk]
   (set particle.w (* particle.w 2))
   (set particle.h (* particle.h 2))
-  (table.insert state.chunks chunk)
-  (set state.integrity (* 100 (/ (# state.chunks) state.total-chunks))))
+  (set chunk.on true)
+  (set state.integrity (* 100 (/ (# (lume.filter state.chunks :on))
+                                 (# state.chunks)))))
 
 (fn lock []
-  (when (and state.particle (< (phase.get) 0.5))
-    (let [chunk (find-chunk state.particle state.img)]
-      (if (and chunk (not (lume.find (lume.map state.chunks :id) chunk.id)))
+  (when (and state.particle (or (< (phase.get) 0.5)
+                                ;; debugging
+                                (love.keyboard.isDown "lshift" "rshift")))
+    (let [chunk (chunks.find state.field state.particle
+                             state.img-data state.chunks)]
+      (if (and chunk (not chunk.on))
           (lock-success state.particle chunk)
           (set state.particle-missed (+ state.particle-missed 1))))
     (set state.particle (and (< state.integrity 100) (make-particle)))))
@@ -115,7 +113,7 @@
        "space" lock
        ;; for debugging:
        "backspace" reset
-       "`" #(set state.img (love.graphics.newImage "assets/klingon.png"))}
+       "`" #(set state.filename "assets/klingon.png")}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
  :props {:full-draw full-draw :update update
