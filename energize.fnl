@@ -4,6 +4,7 @@
 (local sparkle (require :sparkle))
 (local draw (require :draw))
 (local chunks (require :chunks))
+(local sound (require :sound))
 
 (local images ["box.png" "darael.png" "klingon.png" "ayanto.png"])
 (local maxes [false 20 32 30])
