@@ -3,7 +3,9 @@
 
 (local font (love.graphics.newFont "assets/Anonymous Pro.ttf" 10))
 
-(local text (love.filesystem.read "briefings/1.txt"))
+(local texts [(love.filesystem.read "briefings/1.txt")
+              (love.filesystem.read "briefings/2.txt")
+              "It appears you have gotten farther than the game has been written."])
 (local footer "\n\n  [press enter]")
 
 (var offset 0)
@@ -12,12 +14,15 @@
   (love.graphics.setColor 1 1 1)
   (love.graphics.draw bg)
   (love.graphics.setScissor 194 24 126 176)
-  (love.graphics.printf (.. text footer) font 194 (+ 24 offset) 124)
+  (love.graphics.printf (.. (. texts (editor.get-prop :level 1)) footer)
+                        font 194 (+ 24 offset) 124)
   (love.graphics.setScissor))
 
 (fn continue []
   (editor.kill-buffer)
-  (editor.open "*tutorial*" "tutorial" {:no-file true}))
+  (if (= 1 (editor.get-prop :level 1))
+      (editor.open "*tutorial*" "tutorial" true)
+      (editor.open "*energize*" "energize" true)))
 
 (fn scroll [dir]
   (set offset (+ offset dir)))

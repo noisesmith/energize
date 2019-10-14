@@ -10,6 +10,7 @@
 
 (fn update [tick progress]
   (table.remove phase)
+  ;; TODO: add ability to control phase frequency?
   (let [v (* 18 (math.sin (math.rad (* tick 6))))
         v (/ v (math.max 1 (/ (or progress 0) 8)))]
     (table.insert phase 1 v)))

@@ -5,6 +5,8 @@
 (local draw (require :draw))
 (local chunks (require :chunks))
 
+(local images ["box.png" "klingon.png"])
+
 (local state {:tick 0
               :particle nil
               :chunks [] ; filled in
@@ -21,7 +23,7 @@
 
               :field {:ox 38 :oy 48 :w 100 :h 114}
               :img nil
-              :filename "assets/box.png"})
+              :level 1})
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
@@ -29,14 +31,16 @@
   {:x (+ state.beam-x (math.random state.beam-w)) :y state.field.oy
    :w 2 :h 2 :dy 1 :dx 2})
 
-(fn reset []
+(fn reset [level]
+  (when level (set state.level level))
   (set state.tick 0)
   (set state.integrity 0)
   (set state.particle (make-particle))
   (set state.particle-count 0)
   (set state.particle-missed 0)
   (set state.progress 0)
-  (set state.img-data (love.image.newImageData state.filename))
+  (set state.img-data (love.image.newImageData
+                       (.. "assets/" (. images state.level))))
   (set state.img (love.graphics.newImage state.img-data))
   (set state.chunks (chunks.for state.img-data state.field))
   (phase.reset)
@@ -93,16 +97,22 @@
   (set state.integrity (* 100 (/ (# (lume.filter state.chunks :on))
                                  (# state.chunks)))))
 
+(fn win-level []
+  (set state.level (+ state.level 1))
+  (editor.open "*briefing*" "briefing" true {:level state.level}))
+
 (fn lock []
-  (when (and state.particle (or (< (phase.get) 0.5)
-                                ;; debugging
-                                (love.keyboard.isDown "lshift" "rshift")))
-    (let [chunk (chunks.find state.field state.particle
-                             state.img-data state.chunks)]
-      (if (and chunk (not chunk.on))
-          (lock-success state.particle chunk)
-          (set state.particle-missed (+ state.particle-missed 1))))
-    (set state.particle (and (< state.integrity 100) (make-particle)))))
+  (if (= state.progress 100)
+      (win-level)
+      (when (and state.particle (or (< (phase.get) 0.5)
+                                    ;; debugging
+                                    (love.keyboard.isDown "lshift" "rshift")))
+        (let [chunk (chunks.find state.field state.particle
+                                 state.img-data state.chunks)]
+          (if (and chunk (not chunk.on))
+              (lock-success state.particle chunk)
+              (set state.particle-missed (+ state.particle-missed 1))))
+        (set state.particle (and (< state.integrity 100) (make-particle))))))
 
 ;; for reloadability
 (fn full-draw [] (draw.draw state))
@@ -113,7 +123,7 @@
        "space" lock
        ;; for debugging:
        "backspace" reset
-       "`" #(set state.filename "assets/klingon.png")}
+       "`" #(reset "assets/klingon.png")}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
  :props {:full-draw full-draw :update update
