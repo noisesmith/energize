@@ -28,10 +28,12 @@
 (editor.add-mode (require :config.edit-mode))
 (editor.add-mode (require :config.fennel-mode))
 (editor.add-mode (require :config.repl)) ; for fennel code
+
 (editor.add-mode (require :energize))
+(editor.add-mode (require :cutscene))
 (editor.add-mode (require :intro))
 (editor.add-mode (require :briefing))
 (editor.add-mode (require :tutorial))
 
 (editor.init "*repl*" "repl" ["This is the repl. Enter code to run." ">> "])
-(editor.open "*intro*" "intro" {:no-file true})
+(editor.open "*intro*" "intro" true)
