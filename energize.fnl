@@ -6,7 +6,7 @@
 (local chunks (require :chunks))
 
 (local images ["box.png" "klingon.png"])
-(local maxes [24 20])
+(local maxes [false 20])
 
 (local state {:tick 0
               :particle nil
@@ -29,7 +29,8 @@
 (global s state) ; for debugging in the repl
 
 (fn make-particle []
-  {:x (+ state.beam-x (math.random state.beam-w)) :y state.field.oy
+  {:x (+ state.beam-x (math.random state.beam-w))
+   :y state.field.oy
    :w 2 :h 2 :dy 1 :dx 2})
 
 (fn reset [level]
@@ -40,7 +41,7 @@
   (set state.particle-count 0)
   (set state.particle-missed 0)
   (set state.progress 0)
-  (set state.max (or (. maxes state.level) 64))
+  (set state.max (. maxes state.level))
   (set state.img-data (love.image.newImageData
                        (.. "assets/" (. images state.level))))
   (set state.img (love.graphics.newImage state.img-data))
@@ -89,13 +90,17 @@
     (when state.particle
       (set state.particle (drop-particle state.particle)))
     (when (love.keyboard.isDown "tab") ; debug
-      (set state.integrity (math.min (+ 1 state.integrity) 100)))
+      (set state.integrity (math.min (+ 5 state.integrity) 100)))
     (when (= 100 state.integrity)
-      (set state.progress (+ state.progress 1))
+      (set state.progress (+ state.progress (if (love.keyboard.isDown "tab")
+                                                30
+                                                1)))
       (when (< 136 state.progress)
         (win-level)))
-    (when (< state.max (+ state.particle-missed state.particle-count))
+    (when (and state.max (< state.max (+ state.particle-missed
+                                         state.particle-count)))
       (lose-level))
+    ;; TODO: dt here
     (when (love.keyboard.isDown "left") (move -1))
     (when (love.keyboard.isDown "right") (move 1))
     (when (< step t)
@@ -122,7 +127,8 @@
       (if (and chunk (not chunk.on))
           (lock-success state.particle chunk)
           (set state.particle-missed (+ state.particle-missed 1))))
-    (set state.particle (and (< state.integrity 100) (make-particle)))))
+    (set state.particle
+         (and (< state.integrity 100) (make-particle)))))
 
 ;; for reloadability
 (fn full-draw [] (draw.draw state))
