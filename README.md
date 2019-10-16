@@ -34,20 +34,75 @@ login` to log into your itch.io account if you haven't done that before.
 * [ ] save progress
 * [ ] level select?
 
-## Levels:
+## Story
 
-* [X] cargo box of quadrotriticale (tutorial)
-* [X] one person
-* [ ] several people
-* [ ] falling person?
-* [ ] person wearing an unauthorized weapon?
-* [ ] reversing a transporter accident
-* [ ] Tuvix??
+The Lakota is assigned to investigate a disturbance in the Malkor
+system, which has been home to a pre-warp-capable civilization. They
+have been acting aggressively towards nearby systems. An investigation
+reveals that they have been provided with advanced technology in
+violation of the prime directive by a rogue starfleet captain; you
+must go apprehend them.
 
-We should see if we can incorporate some backstory for the characters
-beaming in.
+### Cargo box of quadrotriticale
 
-## Game mechanics options:
+This is just a tutorial; you can't lose. The box gets beamed up.
+
+### Lt. Darael (Betazoid disguized as Malkoran)
+
+Lt. Darael has been a cultural observer in disguise on Malkor 3; she
+has requested evacuation as her team has split up, and she believes her
+cover is compromised.
+
+Once she beams up, Benteen (or T'Ral) debriefs her; she says that she
+has noticed that the Malkorans have access to a higher level of
+technology than they should, achieving warp travel in the past two
+years. They have been acting aggressively towards neighboring systems.
+
+### Cmdr Juran (Andorian) and Lt. Kolimet (Klingon)
+
+Juran and Kolimet were Darael's teammates on the Malkor assignment;
+they have left Malkor in a shuttlecraft or runabout to pursue a lead
+they suspect will be able to explain where the technology is coming
+from. Their ship is disabled and adrift; you need to beam them back
+together.
+
+Once they are on board, they tell the Captain that the ship they were
+chasing met up with the USS Chandrasekhar under Captain
+Cunningham. The Chandrasekhar disabled the runabout when they
+interrupted a transfer of cargo.
+
+### Lt. Cmdr Atanyo (Falling humanoid) (Grazerite?)
+
+Benteen receives a coded subspace message from Lt. Cmdr Atanyo of the
+Chandrasekhar; he is worried about the behavior of his captain and
+understands that he has gone rogue. He gives you their coordinates so
+you can rendezvous with them.
+
+Captain Cunningham discovers the message and goes to apprehend Atanyo,
+who flees thru the ship and is almost apprehended, but he topples over
+a railing in engineering and manages to disable the shields long
+enough for you to beam him over and save him. He is in mid-air when
+he's beamed out.
+
+While this goes on, the Chandrasekhar attacks, and your screen shakes
+as the Lakota takes damage. Once the transporter sequence is complete,
+the Lakota counterattacks and takes down the Chandrasekhar's shields
+and weapons.
+
+### Captain Cunningham (rogue captain)
+
+Once the Chandrasekhar's shields are down, you can beam Captain
+Cunningham aboard the Lakota, but the biofilters detect that he is
+armed, so it's your job to filter out the weapon and ensure that it is
+not materialized with the captain.
+
+Once he materializes he gives a rant about how the Prime Directive is
+holding back progress and how he's the only visionary who can see it.
+T'Ral arrives and escorts him to the brig.
+
+You win!
+
+## Game mechanics
 
 Falling particles come down and must be placed in order to fill a silhouette
 of the character beaming in. As the particles fall, they phase in and out.
@@ -56,16 +111,12 @@ in classic tetris where blocks only stop falling when they land on another
 block. You have a limited number of particles to place before you run out,
 but you don't need to get it 100% perfect.
 
- OR:
-
-sokoban-like arrangement of particles?
-
 ## Art needed
 
 * [X] title screen
 * [X] mission briefing (LCARS padd w/ commander portrait?)
 * [X] transporter pad with control panel
-* [ ] external shots between missions?
+* [X] external shots between missions?
 * [ ] various characters being beamed in
 
 https://p.hagelb.org/galaxy-transporter.jpg
