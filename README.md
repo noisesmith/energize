@@ -36,7 +36,7 @@ login` to log into your itch.io account if you haven't done that before.
 
 ## Story
 
-The Lakota is assigned to investigate a disturbance in the Malkor
+The Lakota is assigned to investigate a disturbance in the Malcor
 system, which has been home to a pre-warp-capable civilization. They
 have been acting aggressively towards nearby systems. An investigation
 reveals that they have been provided with advanced technology in
@@ -47,21 +47,21 @@ must go apprehend them.
 
 This is just a tutorial; you can't lose. The box gets beamed up.
 
-### Lt. Darael (Betazoid disguized as Malkoran)
+### Lt. Darael (Betazoid disguized as Malcoran)
 
-Lt. Darael has been a cultural observer in disguise on Malkor 3; she
+Lt. Darael has been a cultural observer in disguise on Malcor III; she
 has requested evacuation as her team has split up, and she believes her
 cover is compromised.
 
 Once she beams up, Benteen (or T'Ral) debriefs her; she says that she
-has noticed that the Malkorans have access to a higher level of
+has noticed that the Malcorans have access to a higher level of
 technology than they should, achieving warp travel in the past two
 years. They have been acting aggressively towards neighboring systems.
 
 ### Cmdr Juran (Andorian) and Lt. Kolimet (Klingon)
 
-Juran and Kolimet were Darael's teammates on the Malkor assignment;
-they have left Malkor in a shuttlecraft or runabout to pursue a lead
+Juran and Kolimet were Darael's teammates on the Malcor assignment;
+they have left Malcor in a shuttlecraft or runabout to pursue a lead
 they suspect will be able to explain where the technology is coming
 from. Their ship is disabled and adrift; you need to beam them back
 together.

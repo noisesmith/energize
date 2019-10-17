@@ -23,7 +23,8 @@
 (fn update [dt]
   (set tick (+ tick dt))
   (each [_ s (pairs stars)]
-    (set s.x (math.fmod (+ s.x (* s.dx dt)) 320))))
+    (let [star-dx (editor.get-prop :star-dx 1)]
+      (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320)))))
 
 (fn skip []
   (editor.kill-buffer)

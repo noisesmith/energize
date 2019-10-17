@@ -20,7 +20,7 @@ cleansrc: ; rm -rf $(OUT)
 
 LOVEFILE=releases/$(NAME)-$(VERSION).love
 
-$(LOVEFILE): $(LUA) $(OUT) $(LIBS) assets briefings
+$(LOVEFILE): $(LUA) $(OUT) $(LIBS) assets text
 	mkdir -p releases/
 	find $^ -type f | LC_ALL=C sort | env TZ=UTC zip -r -q -9 -X $@ -@
 

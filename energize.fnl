@@ -74,10 +74,15 @@
   (editor.open "*briefing*" "briefing" true {:lost? true
                                              :level state.level}))
 
+(fn has-debrief? [level]
+  (. {3 true} level))
+
 (fn win-level []
   (set state.level (+ state.level 1))
-  (editor.open "*briefing*" "briefing" true {:lost? false
-                                             :level state.level}))
+  (if (has-debrief? state.level)
+      (editor.open "*debriefing*" "debriefing" true {:level state.level})
+      (editor.open "*briefing*" "briefing" true {:lost? false
+                                                 :level state.level})))
 
 (local step 0.05)
 (var t 0)
