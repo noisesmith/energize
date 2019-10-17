@@ -36,6 +36,12 @@
   (let [x (- (* tick 35) 190)]
     (love.graphics.draw lakota x 90)))
 
+(local runabout (love.graphics.newImage "assets/runabout-damage.png"))
+
+(fn draw-cutscene-runabout [tick]
+  (love.graphics.draw runabout (+ (* tick 5) 150) 100)
+  (love.graphics.draw lakota (- (* tick 35) 19) 50))
+
 (local miranda (love.graphics.newImage "assets/miranda.png"))
 
 (fn draw-cutscene-miranda [tick]
@@ -52,6 +58,9 @@
 (local cutscenes
        {2 {:draw-callback draw-cutscene-planet
            :star-dx 0
+           :destination ["*energize*" "energize"]}
+        3 {:draw-callback draw-cutscene-runabout
+           :star-dx -0.3
            :destination ["*energize*" "energize"]}
         4 {:draw-callback draw-cutscene-miranda
            :star-dx 0.3
