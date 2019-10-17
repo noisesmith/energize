@@ -31,13 +31,30 @@
 (local planet (love.graphics.newImage "assets/planet.png"))
 (local lakota (love.graphics.newImage "assets/lakota.png"))
 
-(fn draw-cutscene-2 [tick]
-                           (love.graphics.draw planet 20 35)
-                           (let [x (- (* tick 35) 190)]
-                             (love.graphics.draw lakota x 90)))
+(fn draw-cutscene-planet [tick]
+  (love.graphics.draw planet 20 35)
+  (let [x (- (* tick 35) 190)]
+    (love.graphics.draw lakota x 90)))
+
+(local miranda (love.graphics.newImage "assets/miranda.png"))
+
+(fn draw-cutscene-miranda [tick]
+  (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
+  (when (< 1 tick 3)
+    (love.graphics.setColor 0.8 0.8 0.15 0.9)
+    (love.graphics.line (+ 230 (* tick 5)) 130
+                        (+ 130 (* tick 30)) (+ 63 (* tick 15)))
+    (love.graphics.line (+ 230 (* tick 5)) 130
+                        (+ 110 (* tick 30)) (+ 60 (* tick 15)))
+    (love.graphics.setColor 1 1 1))
+  (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
+
 (local cutscenes
-       {2 {:draw-callback draw-cutscene-2
+       {2 {:draw-callback draw-cutscene-planet
            :star-dx 0
+           :destination ["*energize*" "energize"]}
+        4 {:draw-callback draw-cutscene-miranda
+           :star-dx 0.3
            :destination ["*energize*" "energize"]}})
 
 (fn continue []
