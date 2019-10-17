@@ -61,14 +61,14 @@ years. They have been acting aggressively towards neighboring systems.
 ### Cmdr Juran (Andorian) and Lt. Kolimet (Klingon)
 
 Juran and Kolimet were Darael's teammates on the Malcor assignment;
-they have left Malcor in a shuttlecraft or runabout to pursue a lead
+they have left Malcor in the runabout USS Serayu to pursue a lead
 they suspect will be able to explain where the technology is coming
 from. Their ship is disabled and adrift; you need to beam them back
 together.
 
 Once they are on board, they tell the Captain that the ship they were
 chasing met up with the USS Chandrasekhar under Captain
-Cunningham. The Chandrasekhar disabled the runabout when they
+Cunningham. The Chandrasekhar disabled the Serayu when they
 interrupted a transfer of cargo.
 
 ### Lt. Cmdr Atanyo (Falling humanoid) (Grazerite?)

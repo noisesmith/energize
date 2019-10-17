@@ -5,8 +5,8 @@
 (local draw (require :draw))
 (local chunks (require :chunks))
 
-(local images ["box.png" "klingon.png"])
-(local maxes [false 20])
+(local images ["box.png" "darael.png" "klingon.png"])
+(local maxes [false 20 32])
 
 (local state {:tick 0
               :particle nil
