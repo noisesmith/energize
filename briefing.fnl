@@ -1,3 +1,4 @@
+;; briefings show Commander T'Ral explaining the next mission.
 (local editor (require :polywell))
 (local bg (love.graphics.newImage "assets/cmdr.png"))
 
@@ -5,6 +6,7 @@
 
 (local texts [(love.filesystem.read "text/1.txt")
               (love.filesystem.read "text/2.txt")
+              (love.filesystem.read "text/3.txt")
               "It appears you have gotten farther than the game has been written."])
 
 (local retry-text (.. "I am afraid that is not an acceptable level of pattern"

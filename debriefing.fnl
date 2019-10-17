@@ -1,3 +1,6 @@
+;; debriefings happen with Captain Benteen in the transporter room
+;; after you finish a level.
+
 (local editor (require :polywell))
 (local bg (love.graphics.newImage "assets/bg.png"))
 (local padd-right (love.graphics.newImage "assets/padd-right.png"))

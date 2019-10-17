@@ -1,3 +1,4 @@
+;; cutscenes show exterior shots of a starfield plus other things.
 (local editor (require :polywell))
 
 (local stars [])
