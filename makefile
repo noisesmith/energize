@@ -5,7 +5,7 @@ URL=https://git.sr.ht/~technomancy/energize
 AUTHOR="Justin Smith and Phil Hagelberg"
 DESCRIPTION="A game where you're the transporter operator on a starship"
 
-LIBS := $(wildcard polywell/lib/*.lua)
+LIBS := $(wildcard polywell/lib/*.lua) $(wildcard lib/*)
 LUA := $(wildcard *.lua) polywell/old.lua polywell/frontend/love.lua polywell/frontend/init.lua
 SRC := $(wildcard *.fnl) $(wildcard polywell/*fnl) $(wildcard polywell/lib/*fnl) $(wildcard config/*fnl)
 OUT := $(patsubst %.fnl,%.lua,$(SRC))
