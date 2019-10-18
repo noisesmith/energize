@@ -29,57 +29,12 @@
     (love.graphics.printf (.. text footer) font 194 (+ 24 offset) 124))
   (love.graphics.setScissor))
 
-(local planet (love.graphics.newImage "assets/planet.png"))
-(local lakota (love.graphics.newImage "assets/lakota.png"))
-
-(fn draw-cutscene-planet [tick]
-  (love.graphics.draw planet 20 35)
-  (let [x (- (* tick 35) 190)]
-    (love.graphics.draw lakota x 90)))
-
-(local runabout (love.graphics.newImage "assets/runabout-damage.png"))
-
-(fn draw-cutscene-runabout [tick]
-  (love.graphics.draw runabout (+ (* tick 5) 150) 100)
-  (love.graphics.draw lakota (- (* tick 35) 19) 50))
-
-(local miranda (love.graphics.newImage "assets/miranda.png"))
-
-(fn draw-cutscene-miranda [tick]
-  (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
-  (when (< 1 tick 3)
-    (love.graphics.setColor 0.8 0.8 0.15 0.9)
-    (love.graphics.line (+ 230 (* tick 5)) 130
-                        (+ 130 (* tick 30)) (+ 63 (* tick 15)))
-    (love.graphics.line (+ 230 (* tick 5)) 130
-                        (+ 110 (* tick 30)) (+ 60 (* tick 15)))
-    (love.graphics.setColor 1 1 1))
-  (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
-
-(local nebula (love.graphics.newImage "assets/nebula.png"))
-
-(fn draw-cutscene-nebula [tick]
-  (love.graphics.draw lakota (+ 120 (* tick 10)) 33)
-  (love.graphics.draw miranda (+ 120 (* tick 2)) 110)
-  (love.graphics.draw nebula 120 110))
-
-(local cutscenes
-       {2 {:draw-callback draw-cutscene-planet
-           :star-dx 0}
-        3 {:draw-callback draw-cutscene-runabout
-           :star-dx -0.3}
-        4 {:draw-callback draw-cutscene-miranda
-           :star-dx -0.3}
-        5 {:draw-callback draw-cutscene-nebula
-           :star-dx 0.1}})
-
 (fn continue []
   (set offset 0)
   (editor.kill-buffer)
-  (let [level (editor.get-prop :level 1)
-        cutscene (. cutscenes level)]
-    (if cutscene
-        (editor.open "*cutscene*" "cutscene" true cutscene)
+  (let [level (editor.get-prop :level 1)]
+    (if (< 1 level)
+        (editor.open "*cutscene*" "cutscene" true {:level level})
         seen-tutorial?
         (editor.open "*energize*" "energize" true)
         (do (set seen-tutorial? true)

@@ -11,25 +11,72 @@
 (for [_ 1 64]
   (table.insert stars (make-star)))
 
+(local planet (love.graphics.newImage "assets/planet.png"))
+(local lakota (love.graphics.newImage "assets/lakota.png"))
+
+(fn draw-cutscene-planet [tick]
+  (love.graphics.draw planet 20 35)
+  (let [x (- (* tick 35) 190)]
+    (love.graphics.draw lakota x 90)))
+
+(local runabout (love.graphics.newImage "assets/runabout-damage.png"))
+
+(fn draw-cutscene-runabout [tick]
+  (love.graphics.draw runabout (+ (* tick 5) 150) 100)
+  (love.graphics.draw lakota (- (* tick 35) 19) 50))
+
+(local miranda (love.graphics.newImage "assets/miranda.png"))
+
+(fn draw-cutscene-miranda [tick]
+  (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
+  (when (< 1 tick 3)
+    (love.graphics.setColor 0.8 0.8 0.15 0.9)
+    (love.graphics.line (+ 230 (* tick 5)) 130
+                        (+ 130 (* tick 30)) (+ 63 (* tick 15)))
+    (love.graphics.line (+ 230 (* tick 5)) 130
+                        (+ 110 (* tick 30)) (+ 60 (* tick 15)))
+    (love.graphics.setColor 1 1 1))
+  (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
+
+(local nebula (love.graphics.newImage "assets/nebula.png"))
+
+(fn draw-cutscene-nebula [tick]
+  (love.graphics.draw lakota (+ 20 (* tick 10)) 33)
+  (love.graphics.draw miranda (+ 120 (* tick 5)) 110)
+  (love.graphics.setColor 1 1 1 0.8)
+  (love.graphics.draw nebula 125 80)
+  (love.graphics.setColor 1 1 1))
+
+(local scenes
+       {2 draw-cutscene-planet
+        3 draw-cutscene-runabout
+        4 draw-cutscene-miranda
+        5 draw-cutscene-nebula})
+
 (fn draw []
   (love.graphics.clear)
   (each [_ {: x : y : dx} (pairs stars)]
     (love.graphics.setColor 1 1 1 (/ dx 16))
     (love.graphics.circle :fill x y 1))
   (love.graphics.setColor 1 1 1)
-  (let [draw-callback (editor.get-prop :draw-callback)]
-    (when draw-callback
-      (draw-callback tick))))
+  (let [scene (or (. scenes (editor.get-prop :level))
+                  (editor.get-prop :draw-callback))]
+    (when scene
+      (scene tick))))
+
+(local star-speeds [nil 0 -0.3 -0.3 0.1])
 
 (fn update [dt]
   (set tick (+ tick dt))
-  (each [_ s (pairs stars)]
-    (let [star-dx (editor.get-prop :star-dx 1)]
+  (let [star-dx (or (. star-speeds (editor.get-prop :level)) -2)]
+    (each [_ s (pairs stars)]
       (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320)))))
 
 (fn skip []
-  (editor.kill-buffer)
-  (editor.open "*energize*" "energize" {:no-file true}))
+  (let [[buffer-name buffer-mode] (editor.get-prop :destination
+                                                   ["*energize*" "energize"])]
+    (editor.kill-buffer)
+    (editor.open buffer-name buffer-mode {:no-file true})))
 
 {:name "cutscene"
  :parent "base"
