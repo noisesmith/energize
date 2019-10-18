@@ -5,8 +5,8 @@
 (local draw (require :draw))
 (local chunks (require :chunks))
 
-(local images ["box.png" "darael.png" "klingon.png"])
-(local maxes [false 20 32])
+(local images ["box.png" "darael.png" "klingon.png" "ayanto.png"])
+(local maxes [false 20 32 30])
 
 (local state {:tick 0
               :particle nil
@@ -74,8 +74,7 @@
   (editor.open "*briefing*" "briefing" true {:lost? true
                                              :level state.level}))
 
-(fn has-debrief? [level]
-  (. {3 true} level))
+(fn has-debrief? [level] (< 2 level))
 
 (fn win-level []
   (set state.level (+ state.level 1))

@@ -9,9 +9,13 @@
 (local font (love.graphics.newFont "assets/Anonymous Pro.ttf" 10))
 
 ;; the level is incremented when you win, so the end of level 2 is treated as 3
-(local texts {3 (love.filesystem.read "text/db3.txt")})
+(local texts {3 (love.filesystem.read "text/db3.txt")
+              4 (love.filesystem.read "text/db4.txt")
+              5 (love.filesystem.read "text/db5.txt")})
 
-(local subjects {3 (love.graphics.newImage "assets/darael.png")})
+(local subjects {3 (love.graphics.newImage "assets/darael.png")
+                 4 (love.graphics.newImage "assets/klingon.png")
+                 5 (love.graphics.newImage "assets/ayanto.png")})
 
 (local footer "\n\n  [press enter]")
 
@@ -21,14 +25,15 @@
   (love.graphics.setColor 1 1 1)
   (love.graphics.draw bg)
   (love.graphics.draw padd-right 158 0)
-  (love.graphics.draw benteen 109 100)
   (let [level (editor.get-prop :level 1)]
     (let [subject (. subjects level)]
       (love.graphics.draw subject 38 48))
     (love.graphics.setScissor 194 24 126 176)
     (let [text (. texts level)]
       (love.graphics.printf (.. text footer) font 194 (+ 24 offset) 124))
-    (love.graphics.setScissor)))
+    (love.graphics.setScissor)
+    (love.graphics.draw benteen (if (or (= level 4) (= level 5))
+                                    123 109) 100)))
 
 (fn continue []
   (set offset 0)

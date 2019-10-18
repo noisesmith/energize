@@ -7,7 +7,8 @@
 (local texts [(love.filesystem.read "text/1.txt")
               (love.filesystem.read "text/2.txt")
               (love.filesystem.read "text/3.txt")
-              "It appears you have gotten farther than the game has been written."])
+              (love.filesystem.read "text/4.txt")
+              (love.filesystem.read "text/5.txt")])
 
 (local retry-text (.. "I am afraid that is not an acceptable level of pattern"
                       " degradation.\n\nWe will have to recover the subject"
@@ -55,16 +56,22 @@
     (love.graphics.setColor 1 1 1))
   (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
 
+(local nebula (love.graphics.newImage "assets/nebula.png"))
+
+(fn draw-cutscene-nebula [tick]
+  (love.graphics.draw lakota (+ 120 (* tick 10)) 33)
+  (love.graphics.draw miranda (+ 120 (* tick 2)) 110)
+  (love.graphics.draw nebula 120 110))
+
 (local cutscenes
        {2 {:draw-callback draw-cutscene-planet
-           :star-dx 0
-           :destination ["*energize*" "energize"]}
+           :star-dx 0}
         3 {:draw-callback draw-cutscene-runabout
-           :star-dx -0.3
-           :destination ["*energize*" "energize"]}
+           :star-dx -0.3}
         4 {:draw-callback draw-cutscene-miranda
-           :star-dx 0.3
-           :destination ["*energize*" "energize"]}})
+           :star-dx -0.3}
+        5 {:draw-callback draw-cutscene-nebula
+           :star-dx 0.1}})
 
 (fn continue []
   (set offset 0)

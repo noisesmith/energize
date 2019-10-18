@@ -29,8 +29,7 @@
 
 (fn skip []
   (editor.kill-buffer)
-  (let [[buffer-name mode-name] (editor.get-prop :destination)]
-    (editor.open buffer-name mode-name {:no-file true})))
+  (editor.open "*energize*" "energize" {:no-file true}))
 
 {:name "cutscene"
  :parent "base"
@@ -39,4 +38,5 @@
        "space" skip}
  :props {:full-draw draw
          :update update
+         :activate #(set tick 0)
          :read-only true}}
