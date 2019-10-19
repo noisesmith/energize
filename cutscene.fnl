@@ -67,7 +67,8 @@
   (let [[buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
     (editor.kill-buffer)
-    (editor.open buffer-name buffer-mode {:no-file true})))
+    (editor.open buffer-name buffer-mode true {:no-file true
+                                               :level (editor.get-prop :level)})))
 
 {:name "cutscene"
  :parent "base"

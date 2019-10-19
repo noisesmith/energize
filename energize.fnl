@@ -33,8 +33,9 @@
    :y state.field.oy
    :w 2 :h 2 :dy 1 :dx 2})
 
-(fn reset [level]
-  (when level (set state.level level))
+(fn reset []
+  (when (editor.get-prop :level)
+    (set state.level (editor.get-prop :level)))
   (set state.tick 0)
   (set state.integrity 0)
   (set state.particle (make-particle))
@@ -78,6 +79,10 @@
 
 (fn win-level []
   (set state.level (+ state.level 1))
+  (let [progress-str (love.filesystem.read "progress")
+        current-progress (tonumber progress-str)]
+    (when (< (or current-progress 0) state.level)
+      (love.filesystem.write "progress" state.level)))
   (if (has-debrief? state.level)
       (editor.open "*debriefing*" "debriefing" true {:level state.level})
       (editor.open "*briefing*" "briefing" true {:lost? false

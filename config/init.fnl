@@ -4,6 +4,14 @@
         (.. "This game requires LOVE 11.x or greater!\n\n"
             "Please download it from https://love2d.org."))
 
+(fn warp [level]
+  (let [progress-str (love.filesystem.read "progress")
+        progress (tonumber progress-str)]
+    (when (<= level (or progress 0))
+      (editor.kill-buffer "*energize*")
+      (editor.open "*briefing*" "briefing" true {:lost? false
+                                                 :level level}))))
+
 (editor.add-mode {:name "base"
                   :map {"f11" editor.cmd.toggle-fullscreen}
                   :ctrl {"x" {:ctrl {"f" editor.cmd.find-file}
@@ -19,7 +27,11 @@
                                     "-" (partial editor.cmd.scale -1)}}
                          "q" editor.cmd.quit
                          "pageup" editor.cmd.next-buffer
-                         "pagedown" editor.cmd.prev-buffer}
+                         "pagedown" editor.cmd.prev-buffer
+                         "1" (partial warp 1)
+                         "2" (partial warp 2)
+                         "3" (partial warp 3)
+                         "4" (partial warp 4)}
                   :alt {"x" editor.cmd.execute
                         "return" editor.cmd.toggle-fullscreen}
                   :ctrl-alt {"b" editor.cmd.switch-buffer}})
