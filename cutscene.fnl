@@ -26,6 +26,7 @@
   (love.graphics.draw lakota (- (* tick 35) 19) 50))
 
 (local miranda (love.graphics.newImage "assets/miranda.png"))
+(local nebula (love.graphics.newImage "assets/nebula.png"))
 
 (fn draw-cutscene-miranda [tick]
   (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
@@ -38,20 +39,10 @@
     (love.graphics.setColor 1 1 1))
   (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
 
-(local nebula (love.graphics.newImage "assets/nebula.png"))
-
-(fn draw-cutscene-nebula [tick]
-  (love.graphics.draw lakota (+ 20 (* tick 10)) 33)
-  (love.graphics.draw miranda (+ 120 (* tick 5)) 110)
-  (love.graphics.setColor 1 1 1 0.8)
-  (love.graphics.draw nebula 125 80)
-  (love.graphics.setColor 1 1 1))
-
 (local scenes
        {2 draw-cutscene-planet
         3 draw-cutscene-runabout
-        4 draw-cutscene-miranda
-        5 draw-cutscene-nebula})
+        4 draw-cutscene-miranda})
 
 (fn draw []
   (love.graphics.clear)

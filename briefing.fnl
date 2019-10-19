@@ -7,8 +7,7 @@
 (local texts [(love.filesystem.read "text/1.txt")
               (love.filesystem.read "text/2.txt")
               (love.filesystem.read "text/3.txt")
-              (love.filesystem.read "text/4.txt")
-              (love.filesystem.read "text/5.txt")])
+              (love.filesystem.read "text/4.txt")])
 
 (local retry-text (.. "I am afraid that is not an acceptable level of pattern"
                       " degradation.\n\nWe will have to recover the subject"

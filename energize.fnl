@@ -123,9 +123,7 @@
                                  (# state.chunks)))))
 
 (fn lock []
-  (when (and state.particle (or (< (phase.get) 0.5)
-                                ;; debugging
-                                (love.keyboard.isDown "lshift" "rshift")))
+  (when (and state.particle (< (phase.get) 0.5))
     (let [chunk (chunks.find state.field state.particle
                              state.img-data state.chunks)]
       (if (and chunk (not chunk.on))
@@ -142,8 +140,7 @@
        "down" (partial bump 3)
        "space" lock
        ;; for debugging:
-       "backspace" reset
-       "`" #(reset "assets/klingon.png")}
+       "backspace" reset}
  :parent "base"
  :ctrl {"r" #(lume.hotswap :energize)}
  :props {:full-draw full-draw :update update
