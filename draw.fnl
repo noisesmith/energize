@@ -1,5 +1,6 @@
 (local phase (require :phase))
 (local sparkle (require :sparkle))
+(local shake (require :shake))
 
 (local lg love.graphics)
 (local bg (lg.newImage "assets/bg.png"))
@@ -47,6 +48,9 @@
 
 (fn draw [state]
   (lg.setColor 1 1 1)
+  (lg.push)
+  (when (= state.level 4)
+    (shake))
   (lg.draw bg)
   (let [{: ox : oy : w : h} state.field]
     (when (< (or state.progress 0) 100)
@@ -77,6 +81,7 @@
         (draw-particle c)))
     (lg.setStencilTest))
   (draw-integrity state)
-  (phase.draw))
+  (phase.draw)
+  (lg.pop))
 
 {:draw draw}

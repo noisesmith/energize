@@ -1,5 +1,6 @@
 ;; cutscenes show exterior shots of a starfield plus other things.
 (local editor (require :polywell))
+(local shake (require :shake))
 
 (local stars [])
 
@@ -29,9 +30,15 @@
 
 (local miranda (love.graphics.newImage "assets/miranda.png"))
 
+(fn firing? [tick]
+  (or (< 0.7 tick 1.8)
+      (< 6.5 tick 7.5)))
+
 (fn draw-cutscene-miranda [tick]
+  (when (firing? tick)
+    (shake true))
   (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
-  (when (< 0.7 tick 2.5)
+  (when (firing? tick)
     (love.graphics.setColor 0.8 0.8 0.15 0.9)
     (love.graphics.line (+ 230 (* tick 5)) 130
                         (+ 130 (* tick 30)) (+ 63 (* tick 15)))
@@ -58,18 +65,26 @@
 
 (local star-speeds [nil 0 -0.3 -0.3 0.1])
 
-(fn update [dt]
-  (set tick (+ tick dt))
-  (let [star-dx (or (. star-speeds (editor.get-prop :level)) -2)]
-    (each [_ s (pairs stars)]
-      (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320)))))
-
 (fn skip []
   (let [[buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
     (editor.kill-buffer)
     (editor.open buffer-name buffer-mode true {:no-file true
                                                :level (editor.get-prop :level)})))
+
+(local durations {2 11
+                  3 6
+                  4 8})
+
+(fn update [dt]
+  (set tick (+ tick dt))
+  (let [level (editor.get-prop :level)
+        star-dx (or (. star-speeds level) -2)
+        duration (. durations level)]
+    (each [_ s (pairs stars)]
+      (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320)))
+    (when (and duration (< duration tick))
+      (skip))))
 
 {:name "cutscene"
  :parent "base"
