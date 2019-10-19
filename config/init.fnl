@@ -27,13 +27,13 @@
                                     "-" (partial editor.cmd.scale -1)}}
                          "q" editor.cmd.quit
                          "pageup" editor.cmd.next-buffer
-                         "pagedown" editor.cmd.prev-buffer
-                         "1" (partial warp 1)
-                         "2" (partial warp 2)
-                         "3" (partial warp 3)
-                         "4" (partial warp 4)}
+                         "pagedown" editor.cmd.prev-buffer}
                   :alt {"x" editor.cmd.execute
-                        "return" editor.cmd.toggle-fullscreen}
+                        "return" editor.cmd.toggle-fullscreen
+                        "1" (partial warp 1)
+                        "2" (partial warp 2)
+                        "3" (partial warp 3)
+                        "4" (partial warp 4)}
                   :ctrl-alt {"b" editor.cmd.switch-buffer}})
 
 (editor.add-mode (require :config.line))

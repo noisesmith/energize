@@ -20,17 +20,18 @@
     (love.graphics.draw lakota x 90)))
 
 (local runabout (love.graphics.newImage "assets/runabout-damage.png"))
+(local nebula (love.graphics.newImage "assets/nebula.png"))
 
 (fn draw-cutscene-runabout [tick]
+  (love.graphics.draw nebula 125 50)
   (love.graphics.draw runabout (+ (* tick 5) 150) 100)
-  (love.graphics.draw lakota (- (* tick 35) 19) 50))
+  (love.graphics.draw lakota (- (* tick 35) 19) 30))
 
 (local miranda (love.graphics.newImage "assets/miranda.png"))
-(local nebula (love.graphics.newImage "assets/nebula.png"))
 
 (fn draw-cutscene-miranda [tick]
   (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
-  (when (< 1 tick 3)
+  (when (< 0.7 tick 2.5)
     (love.graphics.setColor 0.8 0.8 0.15 0.9)
     (love.graphics.line (+ 230 (* tick 5)) 130
                         (+ 130 (* tick 30)) (+ 63 (* tick 15)))
