@@ -39,7 +39,9 @@
   (set offset 0)
   (editor.kill-buffer)
   (let [level (editor.get-prop :level 1)]
-    (editor.open "*briefing*" "briefing" true {:level level})))
+    (if (= level 5)
+        (editor.open "*cutscene*" "cutscene" true {:level level})
+        (editor.open "*briefing*" "briefing" true {:level level}))))
 
 (fn scroll [dir] (set offset (+ offset dir)))
 

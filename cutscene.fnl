@@ -32,25 +32,39 @@
 
 (fn firing? [tick]
   (or (< 0.7 tick 1.8)
-      (< 6.5 tick 7.5)))
+      (< 6 tick 7.5)))
 
 (fn draw-cutscene-miranda [tick]
   (when (firing? tick)
     (shake true))
-  (love.graphics.draw lakota (+ 120 (* tick 5)) 110)
+  (love.graphics.draw lakota (+ 120 (* tick 5)) 80)
   (when (firing? tick)
     (love.graphics.setColor 0.8 0.8 0.15 0.9)
-    (love.graphics.line (+ 230 (* tick 5)) 130
-                        (+ 130 (* tick 30)) (+ 63 (* tick 15)))
-    (love.graphics.line (+ 230 (* tick 5)) 130
-                        (+ 110 (* tick 30)) (+ 60 (* tick 15)))
+    (love.graphics.line (+ 230 (* tick 5)) 100
+                        (+ 130 (* tick 30)) (+ 93 (* tick 15)))
+    (love.graphics.line (+ 230 (* tick 5)) 100
+                        (+ 110 (* tick 30)) (+ 90 (* tick 15)))
     (love.graphics.setColor 1 1 1))
-  (love.graphics.draw miranda (+ 5 (* tick 30)) (* tick 15)))
+  (love.graphics.draw miranda (+ 5 (* tick 30)) (+ 30 (* tick 15))))
+
+(fn draw-cutscene-credits [tick]
+  (let [y (* tick 5)]
+    (love.graphics.print "you won. outstanding!" 100 (math.floor (- 100 y)))
+    (love.graphics.print "by Phil Hagelberg and Justin Smith"
+                         80 (math.floor (- 120 y)))
+    (love.graphics.print "Star Trek and all related marks, logos and characters
+are solely owned by CBS Studios Inc. This fan production is
+not endorsed by, sponsored by, nor affiliated with CBS,
+Paramount Pictures, or any other Star Trek franchise.
+
+https://technomancy.itch.io/energize"
+                         20 (math.floor (- 140 y)))))
 
 (local scenes
        {2 draw-cutscene-planet
         3 draw-cutscene-runabout
-        4 draw-cutscene-miranda})
+        4 draw-cutscene-miranda
+        5 draw-cutscene-credits})
 
 (fn draw []
   (love.graphics.clear)
@@ -63,14 +77,15 @@
     (when scene
       (scene tick))))
 
-(local star-speeds [nil 0 -0.3 -0.3 0.1])
+(local star-speeds [nil 0 -0.3 -0.3 0.5])
 
 (fn skip []
-  (let [[buffer-name buffer-mode] (editor.get-prop :destination
+  (let [level (editor.get-prop :level)
+        [buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
-    (editor.kill-buffer)
-    (editor.open buffer-name buffer-mode true {:no-file true
-                                               :level (editor.get-prop :level)})))
+    (when (< level 5)
+      (editor.kill-buffer)
+      (editor.open buffer-name buffer-mode true {:no-file true :level level}))))
 
 (local durations {2 11
                   3 6
@@ -82,7 +97,10 @@
         star-dx (or (. star-speeds level) -2)
         duration (. durations level)]
     (each [_ s (pairs stars)]
-      (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320)))
+      (if (= level 5)
+          ;; credits have vertical scroll
+          (set s.y (math.fmod (+ s.y (* s.dx star-dx dt)) 320))
+          (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320))))
     (when (and duration (< duration tick))
       (skip))))
 
