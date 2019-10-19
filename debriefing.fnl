@@ -15,7 +15,7 @@
 
 (local subjects {3 (love.graphics.newImage "assets/darael.png")
                  4 (love.graphics.newImage "assets/klingon.png")
-                 5 (love.graphics.newImage "assets/ayanto.png")})
+                 5 (love.graphics.newImage "assets/cunningham.png")})
 
 (local footer "\n\n  [press enter]")
 

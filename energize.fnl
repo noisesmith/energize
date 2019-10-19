@@ -5,7 +5,7 @@
 (local draw (require :draw))
 (local chunks (require :chunks))
 
-(local images ["box.png" "darael.png" "klingon.png" "ayanto.png"])
+(local images ["box.png" "darael.png" "klingon.png" "cunningham.png"])
 (local maxes [false 20 32 30])
 
 (local state {:tick 0
