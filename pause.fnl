@@ -3,8 +3,10 @@
 (fn unpause []
   (editor.change-buffer "*energize*"))
 
+(local text (love.filesystem.read "text/pause.txt"))
+
 (fn draw []
-  (love.graphics.print "press escape to resume." 110 100))
+  (love.graphics.print text 60 80))
 
 {:name "pause"
  :map {"escape" unpause}
