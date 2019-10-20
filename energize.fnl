@@ -36,7 +36,7 @@
 
 (fn make-particle []
   {:x (+ state.beam-x (math.random state.beam-w))
-   :y state.field.oy
+   :y (+ state.field.oy 10)
    :w 2 :h 2 :dy 1 :dx 2})
 
 (fn reset []
@@ -85,6 +85,7 @@
 
 (fn win-level []
   (set state.level (+ state.level 1))
+  (editor.set-prop :level state.level)
   (let [progress-str (love.filesystem.read "progress")
         current-progress (tonumber progress-str)]
     (when (< (or current-progress 0) state.level)

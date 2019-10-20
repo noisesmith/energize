@@ -25,7 +25,7 @@
 
 (fn draw-cutscene-runabout [tick]
   (love.graphics.draw nebula 125 50)
-  (love.graphics.draw runabout (+ (* tick 5) 150) 100)
+  (love.graphics.draw runabout (math.floor (+ (* tick 5) 150)) 100)
   (love.graphics.draw lakota (- (* tick 35) 19) 30))
 
 (local miranda (love.graphics.newImage "assets/miranda.png"))
@@ -100,10 +100,10 @@
         star-dx (or (. star-speeds level) -2)
         duration (. durations level)]
     (each [_ s (pairs stars)]
-      (if (= level 5)
+      (if (= level 6)
           ;; credits have vertical scroll
-          (set s.y (math.fmod (+ s.y (* s.dx star-dx dt)) 320))
-          (set s.x (math.fmod (+ s.x (* s.dx star-dx dt)) 320))))
+          (set s.y (% (+ s.y (* s.dx star-dx dt)) 200))
+          (set s.x (% (+ s.x (* s.dx star-dx dt)) 320))))
     (when (and duration (< duration tick))
       (skip))))
 
