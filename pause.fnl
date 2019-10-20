@@ -1,6 +1,7 @@
 (local editor (require :polywell))
 
 (fn unpause []
+  (editor.kill-buffer)
   (editor.change-buffer "*energize*"))
 
 (local text (love.filesystem.read "text/pause.txt"))
