@@ -128,3 +128,11 @@ https://p.hagelb.org/galaxy-transporter.jpg
 * [lume](https://github.com/rxi/lume) Copyright © 2015-2018 rxi, distributed under the MIT/X11 License
 * [polywell](https://git.sr.ht/~technomancy/polywell) Copyright © 2015-2019 Phil Hagelberg, distributed under LGPLv3
 * [fonts](https://github.com/wrstone/fonts-startrek) distributed under GPLv3
+
+## license
+
+Copyright © 2019 [Justin Smith](https://noisesmith.org) and [Phil Hagelberg](https://technomancy.us)
+
+Code distributed under the GNU General Public License version 3 or
+later; see file license.txt; art and music using Creative Commons
+Attribution ShareAlike 4.0; see cc-license.txt.

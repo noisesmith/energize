@@ -6,6 +6,10 @@
 
        by Phil Hagelberg and Justin Smith
 
+       code released under the GNU General Public License
+         version 3 or later
+
+       art and music released under Creative Commons BY-SA 4.0
 
 Star Trek and all related marks, logos and characters
 are solely owned by CBS Studios Inc. This fan production is
