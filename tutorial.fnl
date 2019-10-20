@@ -19,9 +19,9 @@
                   " particle lock unless it is in high phase.") 208 48 116]
              ["When the pattern integrity hits 100, materialization will begin."
               168 110 95]
-             [(.. "Only a limited number of particles may be used before pattern"
-                  " degradation sets in.")
-              160 78 100]])
+             [(.. "On most missions only a limited number of particles may be "
+                  "used before pattern degradation sets in.")
+              160 68 100]])
 
 (fn continue []
   (set step (+ step 1))

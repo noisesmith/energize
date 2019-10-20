@@ -6,11 +6,11 @@
 (local chunks (require :chunks))
 
 (local images ["box.png" "darael.png" "klingon.png" "cunningham.png"])
-(local maxes [false 20 32 30])
+(local maxes [false 20 32 20])
 
 (local state {:tick 0
               :particle nil
-              :chunks [] ; filled in
+              :chunks []
               :particle-count 0
               :particle-missed 0
               :max nil
@@ -18,7 +18,7 @@
               :beam-x 40
               :beam-w 12
 
-              ;; how many particles have landed successfully?
+              ;; percent of particles that have landed successfully
               :integrity 0
               ;; once we're to 100% integrity, how materialized is it?
               :progress 0

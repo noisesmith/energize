@@ -47,18 +47,10 @@
     (love.graphics.setColor 1 1 1))
   (love.graphics.draw miranda (+ 5 (* tick 30)) (+ 30 (* tick 15))))
 
-(fn draw-cutscene-credits [tick]
-  (let [y (* tick 5)]
-    (love.graphics.print "you won. outstanding!" 100 (math.floor (- 100 y)))
-    (love.graphics.print "by Phil Hagelberg and Justin Smith"
-                         80 (math.floor (- 120 y)))
-    (love.graphics.print "Star Trek and all related marks, logos and characters
-are solely owned by CBS Studios Inc. This fan production is
-not endorsed by, sponsored by, nor affiliated with CBS,
-Paramount Pictures, or any other Star Trek franchise.
+(local credits (love.filesystem.read "text/credits.txt"))
 
-https://technomancy.itch.io/energize"
-                         20 (math.floor (- 140 y)))))
+(fn draw-cutscene-credits [tick]
+  (love.graphics.print credits 20 (math.floor (- 100 (* tick 5)))))
 
 (local scenes
        {2 draw-cutscene-planet

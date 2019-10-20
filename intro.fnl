@@ -5,7 +5,9 @@
 (fn draw [tick]
   (let [x (math.fmod (* tick 20) 320)]
     (love.graphics.draw lakota x 90))
-  (love.graphics.draw text))
+  (love.graphics.draw text)
+  (love.graphics.print "press space" ; the final frontier
+                       25 160))
 
 {:name "intro"
  :parent "cutscene"
