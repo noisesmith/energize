@@ -1,3 +1,4 @@
+;; beaming visual effect
 (fn make-line [img]
   (let [(w h) (img:getDimensions)]
     [(math.random w) (math.random h) (math.random 32)]))

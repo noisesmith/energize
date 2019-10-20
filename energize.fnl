@@ -1,6 +1,7 @@
 ;; this file is the main game mode with falling particles
 ;; poking around in-game? try ctrl-x, ctrl-f to open another
-;; file, such as pause.fnl
+;; file, such as pause.fnl. use ctrl-pageup or ctrl-pagedown
+;; to cycle thru open buffers, or ctrl-x, ctrl-b to switch.
 (local editor (require :polywell))
 (local lume (require :polywell.lib.lume))
 

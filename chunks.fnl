@@ -1,3 +1,5 @@
+;; calculate the positioning of the chunks for the
+;; particles to be locked in.
 (local lume (require :polywell.lib.lume))
 (local size 24)
 

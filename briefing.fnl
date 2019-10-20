@@ -30,8 +30,8 @@
 
 (fn continue []
   (set offset 0)
-  (editor.kill-buffer)
   (let [level (editor.get-prop :level 1)]
+    (editor.kill-buffer)
     (if (< 1 level)
         (editor.open "*cutscene*" "cutscene" true {:level level})
         seen-tutorial?

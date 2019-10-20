@@ -1,3 +1,4 @@
+;; use ctrl-x, ctrl-k to close the current buffer
 (local editor (require :polywell))
 
 (fn unpause []

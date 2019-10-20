@@ -37,8 +37,8 @@
 
 (fn continue []
   (set offset 0)
-  (editor.kill-buffer)
   (let [level (editor.get-prop :level 1)]
+    (editor.kill-buffer)
     (if (= level 5)
         (editor.open "*cutscene*" "cutscene" true {:level level})
         (editor.open "*briefing*" "briefing" true {:level level}))))

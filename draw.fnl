@@ -1,3 +1,4 @@
+;; this module handles drawing the main game only.
 (local phase (require :phase))
 (local sparkle (require :sparkle))
 (local shake (require :shake))
