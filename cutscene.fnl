@@ -47,6 +47,13 @@
     (love.graphics.setColor 1 1 1))
   (love.graphics.draw miranda (+ 5 (* tick 30)) (+ 30 (* tick 15))))
 
+(local win-font (love.graphics.newFont "assets/Trek TNG Monitors.ttf" 44))
+(local win (love.graphics.newImage "assets/win.png"))
+
+(fn draw-cutscene-win [tick]
+  (love.graphics.draw win)
+  (love.graphics.printf "YOU\nWIN" win-font 245 46 100 "left"))
+
 (local credits (love.filesystem.read "text/credits.txt"))
 
 (fn draw-cutscene-credits [tick]
@@ -56,7 +63,8 @@
        {2 draw-cutscene-planet
         3 draw-cutscene-runabout
         4 draw-cutscene-miranda
-        5 draw-cutscene-credits})
+        5 draw-cutscene-win
+        6 draw-cutscene-credits})
 
 (fn draw []
   (love.graphics.clear)
@@ -75,9 +83,12 @@
   (let [level (editor.get-prop :level 1)
         [buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
-    (when (< level 5)
-      (editor.kill-buffer)
-      (editor.open buffer-name buffer-mode true {:no-file true :level level}))))
+    (if (= level 5)
+        (editor.set-prop :level 6)
+        (< level 6)
+        (do (editor.kill-buffer)
+            (editor.open buffer-name buffer-mode true
+                         {:no-file true :level level})))))
 
 (local durations {2 11
                   3 6
