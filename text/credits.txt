@@ -17,3 +17,9 @@ not endorsed by, sponsored by, nor affiliated with CBS,
 Paramount Pictures, or any other Star Trek franchise.
 
   https://technomancy.itch.io/energize
+
+
+
+
+
+Curious about how the game was made? Press f2 to see the code.

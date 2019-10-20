@@ -13,7 +13,8 @@
                                                  :level level}))))
 
 (editor.add-mode {:name "base"
-                  :map {"f11" editor.cmd.toggle-fullscreen}
+                  :map {"f11" editor.cmd.toggle-fullscreen
+                        "f2" #(editor.open "energize.fnl")}
                   :ctrl {"x" {:ctrl {"f" editor.cmd.find-file}
                               :map {"1" editor.cmd.split
                                     "2" (partial editor.cmd.split "vertical")

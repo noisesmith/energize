@@ -1,11 +1,16 @@
+;; this file is the main game mode with falling particles
+;; poking around in-game? try ctrl-x, ctrl-f to open another
+;; file, such as pause.fnl
 (local editor (require :polywell))
 (local lume (require :polywell.lib.lume))
+
 (local phase (require :phase))
 (local sparkle (require :sparkle))
-(local draw (require :draw))
 (local chunks (require :chunks))
+(local draw (require :draw))
 
-(local images ["box.png" "darael.png" "klingon.png" "cunningham.png"])
+(local images ["box.png" "darael.png"
+               "klingon.png" "cunningham.png"])
 (local maxes [false 20 32 20])
 
 (local state {:tick 0
@@ -18,9 +23,9 @@
               :beam-x 40
               :beam-w 12
 
-              ;; percent of particles that have landed successfully
+              ;; % of particles that have landed successfully
               :integrity 0
-              ;; once we're to 100% integrity, how materialized is it?
+              ;; at 100% integrity, how materialized is it?
               :progress 0
 
               :field {:ox 38 :oy 48 :w 100 :h 114}
@@ -60,20 +65,20 @@
       (< (+ state.beam-w state.beam-x) particle.x)
       (set particle.dx (- (math.abs particle.dx))))
   (if (<= (+ state.field.oy state.field.h) particle.y)
-      (do (set state.particle-missed (+ state.particle-missed 1))
+      (do (set state.particle-missed
+               (+ state.particle-missed 1))
           (make-particle))
       particle))
 
 (fn move [dir]
   ;; TODO: temporarily widen beam when moving?
-  (set state.beam-x (lume.clamp (+ state.beam-x dir)
-                                state.field.ox
-                                (- (+ state.field.w state.field.ox)
-                                     state.beam-w))))
+  (let [max (- (+ state.field.w state.field.ox) state.beam-w)]
+    (set state.beam-x (lume.clamp (+ state.beam-x dir)
+                                  state.field.ox max))))
 
 (fn lose-level []
-  (editor.open "*briefing*" "briefing" true {:lost? true
-                                             :level state.level}))
+  (editor.open "*briefing*" "briefing" true
+               {:lost? true :level state.level}))
 
 (fn has-debrief? [level] (< 2 level))
 
@@ -84,9 +89,15 @@
     (when (< (or current-progress 0) state.level)
       (love.filesystem.write "progress" state.level)))
   (if (has-debrief? state.level)
-      (editor.open "*debriefing*" "debriefing" true {:level state.level})
-      (editor.open "*briefing*" "briefing" true {:lost? false
-                                                 :level state.level})))
+      (editor.open "*debriefing*" "debriefing" true
+                   {:level state.level})
+      (editor.open "*briefing*" "briefing" true
+                   {:lost? false :level state.level})))
+
+(fn cheat? []
+  (and (love.keyboard.isDown "tab")
+       (love.keyboard.isDown "`")
+       (love.keyboard.isDown "'")))
 
 (local step 0.05)
 (var t 0)
@@ -98,16 +109,19 @@
     (set state.tick (+ state.tick 1))
     (when state.particle
       (set state.particle (drop-particle state.particle)))
-    (when (love.keyboard.isDown "tab") ; debug
-      (set state.integrity (math.min (+ 5 state.integrity) 100)))
+    (when (cheat?)
+      (set state.integrity (math.min (+ 5 state.integrity)
+                                     100)))
     (when (= 100 state.integrity)
-      (set state.progress (+ state.progress (if (love.keyboard.isDown "tab")
-                                                30
-                                                1)))
+      (set state.progress (+ state.progress
+                             (if (cheat?)
+                                 30
+                                 1)))
       (when (< 136 state.progress)
         (win-level)))
-    (when (and state.max (< state.max (+ state.particle-missed
-                                         state.particle-count)))
+    (when (and state.max
+               (< state.max (+ state.particle-missed
+                               state.particle-count)))
       (lose-level))
     ;; TODO: dt here
     (when (love.keyboard.isDown "left") (move -1))
@@ -124,8 +138,9 @@
   (set particle.h (* particle.h 2))
   (set state.particle-count (+ state.particle-count 1))
   (set chunk.on true)
-  (set state.integrity (* 100 (/ (# (lume.filter state.chunks :on))
-                                 (# state.chunks)))))
+  (set state.integrity
+       (* 100 (/ (# (lume.filter state.chunks :on))
+                 (# state.chunks)))))
 
 (fn lock []
   (when (and state.particle (< (phase.get) 0.5))
@@ -133,7 +148,8 @@
                              state.img-data state.chunks)]
       (if (and chunk (not chunk.on))
           (lock-success state.particle chunk)
-          (set state.particle-missed (+ state.particle-missed 1))))
+          (set state.particle-missed
+               (+ state.particle-missed 1))))
     (set state.particle
          (and (< state.integrity 100) (make-particle)))))
 
