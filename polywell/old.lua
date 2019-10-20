@@ -989,7 +989,7 @@ return {
       local b = buffer_name and get_buffer(buffer_name) or state.b
       assert(#state.buffers > 1, "Can't kill last buffer")
       lume.remove(state.buffers, b)
-      if state["last-buffer"] then
+      if state["last-buffer"] and state["last-buffer"] ~= state.b then
          state.b, state["last-buffer"] = state["last-buffer"], nil
       else
          state.b = lume.last(state.buffers)
