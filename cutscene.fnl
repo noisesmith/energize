@@ -80,7 +80,7 @@ https://technomancy.itch.io/energize"
 (local star-speeds [nil 0 -0.3 -0.3 0.5])
 
 (fn skip []
-  (let [level (editor.get-prop :level)
+  (let [level (editor.get-prop :level 1)
         [buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
     (when (< level 5)
