@@ -140,10 +140,14 @@
 ;; for reloadability
 (fn full-draw [] (draw.draw state))
 
+(fn pause []
+  (editor.open "*pause*" "pause" true))
+
 {:name "energize"
  :map {"up" (partial bump -2)
        "down" (partial bump 3)
        "space" lock
+       "escape" pause
        ;; for debugging:
        "backspace" reset}
  :parent "base"
