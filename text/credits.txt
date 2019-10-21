@@ -1,7 +1,7 @@
                   ENERGIZE!
 
 
-       by Phil Hagelberg and Justin Smith and Emma Bukacek
+       by Phil Hagelberg, Emma Bukacek, and Justin Smith
 
        code released under the GNU General Public License
          version 3 or later
