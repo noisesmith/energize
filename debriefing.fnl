@@ -31,7 +31,8 @@
         (love.graphics.draw subject 38 48)))
     (love.graphics.setScissor 194 24 126 176)
     (let [text (. texts level)]
-      (love.graphics.printf (.. text footer) font 194 (+ 24 offset) 124))
+      (love.graphics.printf (.. (or text "") footer)
+                            font 194 (+ 24 offset) 124))
     (love.graphics.setScissor)
     (love.graphics.draw benteen (if (or (= level 4) (= level 5))
                                     123 109) 100)))
@@ -44,7 +45,12 @@
         (editor.open "*cutscene*" "cutscene" true {:level level})
         (editor.open "*briefing*" "briefing" true {:level level}))))
 
-(fn scroll [dir] (set offset (+ offset dir)))
+(local maxes [nil nil -160 -170 -40])
+
+(fn scroll [dir]
+  (set offset (-> (+ offset dir)
+                  (math.min 0)
+                  (math.max (or (. maxes (editor.get-prop :level)) -500)))))
 
 {:name "debriefing"
  :parent "base"

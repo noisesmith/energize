@@ -39,8 +39,12 @@
         (do (set seen-tutorial? true)
             (editor.open "*tutorial*" "tutorial" true)))))
 
+(local maxes [-80 -100 -10 -80])
+
 (fn scroll [dir]
-  (set offset (+ offset dir)))
+  (set offset (-> (+ offset dir)
+                  (math.min 0)
+                  (math.max (or (. maxes (editor.get-prop :level)) -500)))))
 
 {:name "briefing"
  :parent "base"
