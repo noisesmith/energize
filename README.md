@@ -127,11 +127,14 @@ https://p.hagelb.org/galaxy-transporter.jpg
 * [Fennel](https://github.com/bakpakin/Fennel) Copyright © 2016-2018 Calvin Rose and contributors, distributed under the MIT/X11 License
 * [lume](https://github.com/rxi/lume) Copyright © 2015-2018 rxi, distributed under the MIT/X11 License
 * [polywell](https://git.sr.ht/~technomancy/polywell) Copyright © 2015-2019 Phil Hagelberg, distributed under LGPLv3
-* [fonts](https://github.com/wrstone/fonts-startrek) distributed under GPLv3
+* [fonts](https://github.com/wrstone/fonts-startrek) by William Stone, distributed under GPLv3
+* [beam sound](https://opengameart.org/content/60-cc0-sci-fi-sfx) by rubberduck, distributed under CC0
+* [phaser sound](https://opengameart.org/content/laser-shot) by Gumichan01, distributed under CC-BY-SA 3.0
 
 ## license
 
-Copyright © 2019 [Justin Smith](https://noisesmith.org) and [Phil Hagelberg](https://technomancy.us)
+Copyright © 2019 [Justin Smith](https://noisesmith.org) and
+[Phil Hagelberg](https://technomancy.us) and [Emma Bukacek](https://emmabukacek.com)
 
 Code distributed under the GNU General Public License version 3 or
 later; see file license.txt; art and music using Creative Commons

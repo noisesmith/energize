@@ -1,4 +1,5 @@
 (local editor (require :polywell))
+(local audio (require :audio))
 
 (assert (not= 0 love._version_major)
         (.. "This game requires LOVE 11.x or greater!\n\n"
@@ -14,7 +15,8 @@
 
 (editor.add-mode {:name "base"
                   :map {"f11" editor.cmd.toggle-fullscreen
-                        "f2" #(editor.open "energize.fnl")}
+                        "f2" #(editor.open "energize.fnl")
+                        "m" audio.toggle}
                   :ctrl {"x" {:ctrl {"f" editor.cmd.find-file}
                               :map {"1" editor.cmd.split
                                     "2" (partial editor.cmd.split "vertical")

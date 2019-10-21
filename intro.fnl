@@ -1,4 +1,6 @@
 (local editor (require :polywell))
+(local audio (require :audio))
+
 (local text (love.graphics.newImage "assets/title.png"))
 (local lakota (love.graphics.newImage "assets/lakota.png"))
 
@@ -14,4 +16,5 @@
  :map {;; for jumping straight to the game
        "\\" #(editor.open "*energize*" "energize" {:no-file true})}
  :props {:draw-callback draw
-         :destination ["*briefing*" "briefing"]}}
+         :destination ["*briefing*" "briefing"]
+         :activate #(audio.play :music)}}

@@ -4,4 +4,6 @@
 left/right: move confinement beam
 up/down: boost particle
 space: lock particle
+m: toggle mute
+
 alt+1/2/3/4: level skip (if previously completed)

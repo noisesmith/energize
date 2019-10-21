@@ -27,7 +27,8 @@
   (love.graphics.draw padd-right 158 0)
   (let [level (editor.get-prop :level 1)]
     (let [subject (. subjects level)]
-      (love.graphics.draw subject 38 48))
+      (when subject
+        (love.graphics.draw subject 38 48)))
     (love.graphics.setScissor 194 24 126 176)
     (let [text (. texts level)]
       (love.graphics.printf (.. text footer) font 194 (+ 24 offset) 124))

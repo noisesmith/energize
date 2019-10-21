@@ -1,6 +1,7 @@
 ;; cutscenes show exterior shots of a starfield plus other things.
 (local editor (require :polywell))
 (local shake (require :shake))
+(local audio (require :audio))
 
 (local stars [])
 
@@ -32,7 +33,7 @@
 
 (fn firing? [tick]
   (or (< 0.7 tick 1.8)
-      (< 6 tick 7.5)))
+      (< 5 tick 6)))
 
 (fn draw-cutscene-miranda [tick]
   (when (firing? tick)
@@ -80,6 +81,7 @@
 (local star-speeds [nil 0 -0.3 -0.3 0.5])
 
 (fn skip []
+  (audio.stop :phaser)
   (let [level (editor.get-prop :level 1)
         [buffer-name buffer-mode] (editor.get-prop :destination
                                                    ["*energize*" "energize"])]
@@ -99,6 +101,10 @@
   (let [level (editor.get-prop :level)
         star-dx (or (. star-speeds level) -2)
         duration (. durations level)]
+    (when (= level 4)
+      (if (firing? tick)
+          (audio.play :phaser)
+          (audio.stop :phaser)))
     (each [_ s (pairs stars)]
       (if (= level 6)
           ;; credits have vertical scroll

@@ -5,6 +5,7 @@
 (local editor (require :polywell))
 (local lume (require :polywell.lib.lume))
 
+(local audio (require :audio))
 (local phase (require :phase))
 (local sparkle (require :sparkle))
 (local chunks (require :chunks))
@@ -84,6 +85,7 @@
 (fn has-debrief? [level] (< 2 level))
 
 (fn win-level []
+  (audio.stop :beam)
   (set state.level (+ state.level 1))
   (editor.set-prop :level state.level)
   (let [progress-str (love.filesystem.read "progress")
@@ -115,6 +117,7 @@
       (set state.integrity (math.min (+ 5 state.integrity)
                                      100)))
     (when (= 100 state.integrity)
+      (audio.play :beam)
       (set state.progress (+ state.progress
                              (if (cheat?)
                                  30
